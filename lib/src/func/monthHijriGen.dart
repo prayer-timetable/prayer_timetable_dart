@@ -49,7 +49,8 @@ List<List<Prayer>> monthHijriGen(
   // int daysInHijriMonth = 30;
   int daysInHijriMonth = hDate.lengthOfMonth;
 
-  DateTime startDate = hDate.hijriToGregorian(hYear, hMonth, hDay).add(Duration(hours: 3));
+  DateTime startDate =
+      hDate.hijriToGregorian(hYear, hMonth, hDay).add(Duration(hours: 3));
 
   List<List<Prayer>> prayerList = List.generate(daysInHijriMonth, (index) {
     return prayersGen(

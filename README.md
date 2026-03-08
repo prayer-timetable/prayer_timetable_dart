@@ -1,6 +1,9 @@
 # Prayer Timetable Dart
 
 [![pub package](https://img.shields.io/pub/v/prayer_timetable.svg)](https://pub.dev/packages/prayer_timetable)
+[![pub points](https://img.shields.io/pub/points/prayer_timetable)](https://pub.dev/packages/prayer_timetable/score)
+[![popularity](https://img.shields.io/pub/popularity/prayer_timetable)](https://pub.dev/packages/prayer_timetable/score)
+[![likes](https://img.shields.io/pub/likes/prayer_timetable)](https://pub.dev/packages/prayer_timetable/score)
 [![GitHub](https://img.shields.io/github/license/prayer-timetable/prayer_timetable_dart)](https://github.com/prayer-timetable/prayer_timetable_dart)
 
 A comprehensive Dart library for Islamic prayer time calculations with multiple calculation methods, timezone support, and jamaah (congregation) time management.
@@ -9,13 +12,13 @@ A comprehensive Dart library for Islamic prayer time calculations with multiple 
 
 ## Features
 
--   **Multiple Calculation Methods**: Astronomical calculations, pre-calculated maps, and list-based timetables
--   **Comprehensive Prayer Management**: All five daily prayers plus Sunrise with status tracking
--   **Jamaah Time Support**: Customizable congregation times with various calculation methods
--   **Timezone Handling**: Full timezone support with automatic DST adjustments
--   **Islamic Calendar**: Hijri date integration and conversion utilities
--   **Monthly Generation**: Complete monthly prayer timetables for both calendars
--   **Prayer Analysis**: Current prayer detection, countdown timers, and completion percentages
+- **Multiple Calculation Methods**: Astronomical calculations, pre-calculated maps, and list-based timetables
+- **Comprehensive Prayer Management**: All five daily prayers plus Sunrise with status tracking
+- **Jamaah Time Support**: Customizable congregation times with various calculation methods
+- **Timezone Handling**: Full timezone support with automatic DST adjustments
+- **Islamic Calendar**: Hijri date integration and conversion utilities
+- **Monthly Generation**: Complete monthly prayer timetables for both calendars
+- **Prayer Analysis**: Current prayer detection, countdown timers, and completion percentages
 
 ## Installation
 
@@ -23,7 +26,7 @@ Add this package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-    prayer_timetable: ^2.2.4
+    prayer_timetable: ^2.2.5
 ```
 
 Or install it from the command line:
@@ -242,7 +245,7 @@ print('Next: ${fajr.isNext}');
 
 **Prayer IDs:**
 
--   0: Fajr, 1: Sunrise, 2: Dhuhr, 3: Asr, 4: Maghrib, 5: Isha
+- 0: Fajr, 1: Sunrise, 2: Dhuhr, 3: Asr, 4: Maghrib, 5: Isha
 
 ### Utils Class
 

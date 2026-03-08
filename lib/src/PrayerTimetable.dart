@@ -56,10 +56,24 @@ const List<String> defaultJamaahMethods = [
 ];
 
 /// Default setting to disable jamaah for all prayers
-const List<bool> defaultJamaahPerPrayerOff = [false, false, false, false, false, false];
+const List<bool> defaultJamaahPerPrayerOff = [
+  false,
+  false,
+  false,
+  false,
+  false,
+  false
+];
 
 /// Default setting to enable jamaah for all prayers
-const List<bool> defaultJamaahPerPrayerOn = [true, true, true, true, true, true];
+const List<bool> defaultJamaahPerPrayerOn = [
+  true,
+  true,
+  true,
+  true,
+  true,
+  true
+];
 
 /// Main class for Islamic prayer time management and calculations.
 ///
@@ -210,27 +224,33 @@ class PrayerTimetable<T> {
     /// Define time
     /// ********************************************
     DateTime date = nowTZ(timezone,
-        year: year, month: month, day: day, hour: hour, minute: minute, second: second);
+        year: year,
+        month: month,
+        day: day,
+        hour: hour,
+        minute: minute,
+        second: second);
 
     // print('${this.year}, ${this.month}, ${this.day}');
     // print(DateTime(this.year ?? date.year, this.month ?? date.month, (this.day ?? date.day) + 1,
     //     this.hour ?? 3, this.minute ?? 0, this.second ?? 0));
     bool localJamaahOn = jamaahOn;
-    List<bool> localJamaahPerPrayer =
-        !localJamaahOn ? defaultJamaahPerPrayerOff : jamaahPerPrayer ?? defaultJamaahPerPrayerOn;
+    List<bool> localJamaahPerPrayer = !localJamaahOn
+        ? defaultJamaahPerPrayerOff
+        : jamaahPerPrayer ?? defaultJamaahPerPrayerOn;
 
     /// ********************************************
     /// Define prayer times
     /// ********************************************
     current = prayersGen(
-      DateTime(year ?? date.year, month ?? date.month, day ?? date.day, hour ?? 3, minute ?? 0,
-          second ?? 0),
+      DateTime(year ?? date.year, month ?? date.month, day ?? date.day,
+          hour ?? 3, minute ?? 0, second ?? 0),
       timetableMap: timetableMap,
       timetableList: timetableList,
       differences: differences,
       timetableCalc: timetableCalc?.copyWith(
-          date: DateTime(year ?? date.year, month ?? date.month, (day ?? date.day), hour ?? 3,
-              minute ?? 0, second ?? 0)),
+          date: DateTime(year ?? date.year, month ?? date.month,
+              (day ?? date.day), hour ?? 3, minute ?? 0, second ?? 0)),
       timezone: timezone,
       // useTz: useTz,
       hijriOffset: hijriOffset ?? 0,
@@ -244,14 +264,14 @@ class PrayerTimetable<T> {
     );
 
     next = prayersGen(
-      DateTime(year ?? date.year, month ?? date.month, (day ?? date.day) + 1, hour ?? 3,
-          minute ?? 0, second ?? 0),
+      DateTime(year ?? date.year, month ?? date.month, (day ?? date.day) + 1,
+          hour ?? 3, minute ?? 0, second ?? 0),
       timetableMap: timetableMap,
       timetableList: timetableList,
       differences: differences,
       timetableCalc: timetableCalc?.copyWith(
-          date: DateTime(year ?? date.year, month ?? date.month, (day ?? date.day) + 1, hour ?? 3,
-              minute ?? 0, second ?? 0)),
+          date: DateTime(year ?? date.year, month ?? date.month,
+              (day ?? date.day) + 1, hour ?? 3, minute ?? 0, second ?? 0)),
       timezone: timezone,
       // useTz: useTz,
       hijriOffset: hijriOffset ?? 0,
@@ -264,14 +284,14 @@ class PrayerTimetable<T> {
       prayerLength: prayerLength,
     );
     previous = prayersGen(
-      DateTime(year ?? date.year, month ?? date.month, (day ?? date.day) - 1, hour ?? 3,
-          minute ?? 0, second ?? 0),
+      DateTime(year ?? date.year, month ?? date.month, (day ?? date.day) - 1,
+          hour ?? 3, minute ?? 0, second ?? 0),
       timetableMap: timetableMap,
       timetableList: timetableList,
       differences: differences,
       timetableCalc: timetableCalc?.copyWith(
-          date: DateTime(year ?? date.year, month ?? date.month, (day ?? date.day) - 1, hour ?? 3,
-              minute ?? 0, second ?? 0)),
+          date: DateTime(year ?? date.year, month ?? date.month,
+              (day ?? date.day) - 1, hour ?? 3, minute ?? 0, second ?? 0)),
       timezone: timezone,
       // useTz: useTz,
       hijriOffset: hijriOffset ?? 0,

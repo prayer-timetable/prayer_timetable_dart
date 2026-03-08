@@ -196,8 +196,9 @@ class Utils {
       // midnight - fajr
       if (inputDate.isBefore(prayersCurrent[0].prayerTime)) {
         tempPrevious = prayersPrevious[4].prayerTime;
-        tempCurrent =
-            jamaahPerPrayer[5] ? prayersPrevious[5].jamaahTime : prayersPrevious[5].prayerTime;
+        tempCurrent = jamaahPerPrayer[5]
+            ? prayersPrevious[5].jamaahTime
+            : prayersPrevious[5].prayerTime;
         tempNext = prayersCurrent[0].prayerTime;
         tempCurrentId = 5;
       }
@@ -205,15 +206,18 @@ class Utils {
       else if (inputDate.isBefore(prayersCurrent[0].jamaahTime)) {
         tempPrevious = prayersPrevious[5].prayerTime;
         tempCurrent = prayersCurrent[0].prayerTime;
-        tempNext = jamaahPerPrayer[0] ? prayersCurrent[0].jamaahTime : prayersCurrent[1].prayerTime;
+        tempNext = jamaahPerPrayer[0]
+            ? prayersCurrent[0].jamaahTime
+            : prayersCurrent[1].prayerTime;
         tempCurrentId = 0;
         tempJamaahPending = jamaahPerPrayer[0];
       }
       // fajr jammah - sunrise
       else if (inputDate.isBefore(prayersCurrent[1].prayerTime)) {
         tempPrevious = prayersPrevious[5].prayerTime;
-        tempCurrent =
-            jamaahPerPrayer[0] ? prayersCurrent[0].jamaahTime : prayersCurrent[0].prayerTime;
+        tempCurrent = jamaahPerPrayer[0]
+            ? prayersCurrent[0].jamaahTime
+            : prayersCurrent[0].prayerTime;
         tempNext = prayersCurrent[1].prayerTime;
         tempCurrentId = 0;
       }
@@ -228,15 +232,18 @@ class Utils {
       else if (inputDate.isBefore(prayersCurrent[2].jamaahTime)) {
         tempPrevious = prayersCurrent[1].prayerTime;
         tempCurrent = prayersCurrent[2].prayerTime;
-        tempNext = jamaahPerPrayer[2] ? prayersCurrent[2].jamaahTime : prayersCurrent[3].prayerTime;
+        tempNext = jamaahPerPrayer[2]
+            ? prayersCurrent[2].jamaahTime
+            : prayersCurrent[3].prayerTime;
         tempCurrentId = 2;
         tempJamaahPending = jamaahPerPrayer[2];
       }
       // dhuhr jamaah - asr
       else if (inputDate.isBefore(prayersCurrent[3].prayerTime)) {
         tempPrevious = prayersCurrent[1].prayerTime;
-        tempCurrent =
-            jamaahPerPrayer[2] ? prayersCurrent[2].jamaahTime : prayersCurrent[2].prayerTime;
+        tempCurrent = jamaahPerPrayer[2]
+            ? prayersCurrent[2].jamaahTime
+            : prayersCurrent[2].prayerTime;
         tempNext = prayersCurrent[3].prayerTime;
         tempCurrentId = 2;
       }
@@ -244,15 +251,18 @@ class Utils {
       else if (inputDate.isBefore(prayersCurrent[3].jamaahTime)) {
         tempPrevious = prayersCurrent[2].prayerTime;
         tempCurrent = prayersCurrent[3].prayerTime;
-        tempNext = jamaahPerPrayer[3] ? prayersCurrent[3].jamaahTime : prayersCurrent[4].prayerTime;
+        tempNext = jamaahPerPrayer[3]
+            ? prayersCurrent[3].jamaahTime
+            : prayersCurrent[4].prayerTime;
         tempCurrentId = 3;
         tempJamaahPending = jamaahPerPrayer[3];
       }
       // asr jamaah - maghrib
       else if (inputDate.isBefore(prayersCurrent[4].prayerTime)) {
         tempPrevious = prayersCurrent[2].prayerTime;
-        tempCurrent =
-            jamaahPerPrayer[3] ? prayersCurrent[3].jamaahTime : prayersCurrent[3].prayerTime;
+        tempCurrent = jamaahPerPrayer[3]
+            ? prayersCurrent[3].jamaahTime
+            : prayersCurrent[3].prayerTime;
         tempNext = prayersCurrent[4].prayerTime;
         tempCurrentId = 3;
       }
@@ -260,15 +270,18 @@ class Utils {
       else if (inputDate.isBefore(prayersCurrent[4].jamaahTime)) {
         tempPrevious = prayersCurrent[3].prayerTime;
         tempCurrent = prayersCurrent[4].prayerTime;
-        tempNext = jamaahPerPrayer[4] ? prayersCurrent[4].jamaahTime : prayersCurrent[5].prayerTime;
+        tempNext = jamaahPerPrayer[4]
+            ? prayersCurrent[4].jamaahTime
+            : prayersCurrent[5].prayerTime;
         tempCurrentId = 4;
         tempJamaahPending = jamaahPerPrayer[4];
       }
       // maghrib jamaah - isha
       else if (inputDate.isBefore(prayersCurrent[5].prayerTime)) {
         tempPrevious = prayersCurrent[3].prayerTime;
-        tempCurrent =
-            jamaahPerPrayer[4] ? prayersCurrent[4].jamaahTime : prayersCurrent[4].prayerTime;
+        tempCurrent = jamaahPerPrayer[4]
+            ? prayersCurrent[4].jamaahTime
+            : prayersCurrent[4].prayerTime;
         tempNext = prayersCurrent[5].prayerTime;
         tempCurrentId = 4;
       }
@@ -276,15 +289,18 @@ class Utils {
       else if (inputDate.isBefore(prayersCurrent[5].jamaahTime)) {
         tempPrevious = prayersCurrent[4].prayerTime;
         tempCurrent = prayersCurrent[5].prayerTime;
-        tempNext = jamaahPerPrayer[5] ? prayersCurrent[5].jamaahTime : prayersNext[0].prayerTime;
+        tempNext = jamaahPerPrayer[5]
+            ? prayersCurrent[5].jamaahTime
+            : prayersNext[0].prayerTime;
         tempCurrentId = 5;
         tempJamaahPending = jamaahPerPrayer[5];
       }
       // isha jamaah - midnight
       else {
         tempPrevious = prayersCurrent[4].prayerTime;
-        tempCurrent =
-            jamaahPerPrayer[5] ? prayersCurrent[5].prayerTime : prayersCurrent[5].prayerTime;
+        tempCurrent = jamaahPerPrayer[5]
+            ? prayersCurrent[5].prayerTime
+            : prayersCurrent[5].prayerTime;
         tempNext = prayersNext[0].prayerTime;
         tempCurrentId = 5;
         tempIsAfterIsha = true;
@@ -300,16 +316,20 @@ class Utils {
     DateTime sunsetToday = prayersCurrent[4].prayerTime;
     DateTime sunsetYesterday = prayersPrevious[4].prayerTime;
     midnight = time.isBefore(dawnToday)
-        ? sunsetYesterday
-            .add(Duration(minutes: (dawnToday.difference(sunsetYesterday).inMinutes / 2).floor()))
-        : sunsetToday
-            .add(Duration(minutes: (dawnTomorrow.difference(sunsetToday).inMinutes / 2).floor()));
+        ? sunsetYesterday.add(Duration(
+            minutes:
+                (dawnToday.difference(sunsetYesterday).inMinutes / 2).floor()))
+        : sunsetToday.add(Duration(
+            minutes:
+                (dawnTomorrow.difference(sunsetToday).inMinutes / 2).floor()));
 
     lastThird = time.isBefore(dawnToday)
-        ? sunsetYesterday.add(
-            Duration(minutes: (2 * dawnToday.difference(sunsetYesterday).inMinutes / 3).floor()))
-        : sunsetToday.add(
-            Duration(minutes: (2 * dawnTomorrow.difference(sunsetToday).inMinutes / 3).floor()));
+        ? sunsetYesterday.add(Duration(
+            minutes: (2 * dawnToday.difference(sunsetYesterday).inMinutes / 3)
+                .floor()))
+        : sunsetToday.add(Duration(
+            minutes: (2 * dawnTomorrow.difference(sunsetToday).inMinutes / 3)
+                .floor()));
 
     // components
     time = inputDate;
@@ -326,7 +346,8 @@ class Utils {
     countDown = tempNext.difference(inputDate);
     countUp = inputDate.difference(tempCurrent);
 
-    percentage = round2Decimals(100 * (countUp.inSeconds / (countDown + countUp).inSeconds));
+    percentage = round2Decimals(
+        100 * (countUp.inSeconds / (countDown + countUp).inSeconds));
 
     percentage = percentage.isNaN ? 0 : percentage;
 
@@ -357,7 +378,8 @@ class Utils {
   /// DateTime gregorianDate = Utils.hijriToGregorian(1446, 9, 26);
   /// // Returns: 2025-03-26
   /// ```
-  static DateTime hijriToGregorian(int hijriYear, int hijriMonth, int hijriDay) {
+  static DateTime hijriToGregorian(
+      int hijriYear, int hijriMonth, int hijriDay) {
     var hDate = HijriCalendar.now();
     return hDate.hijriToGregorian(hijriYear, hijriMonth, hijriDay);
   }

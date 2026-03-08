@@ -12,7 +12,8 @@ library;
 ///
 /// [d] - The date to check for DST
 /// Returns true if the date is during DST, false otherwise
-bool isDSTCalc(DateTime d) => DateTime(d.year, 6, 1).timeZoneOffset == d.timeZoneOffset;
+bool isDSTCalc(DateTime d) =>
+    DateTime(d.year, 6, 1).timeZoneOffset == d.timeZoneOffset;
 
 /// Rounds a numeric value to 2 decimal places.
 ///
@@ -150,10 +151,13 @@ String printDuration(Duration duration, {int adjust = 0, bool round = false}) {
 /// [adjust] - Optional seconds to add/subtract
 /// [round] - If true, excludes seconds from output
 /// Returns a formatted duration string with units
-String printDurationAlt(Duration duration, {int adjust = 0, bool round = false}) {
+String printDurationAlt(Duration duration,
+    {int adjust = 0, bool round = false}) {
   String hrs = '${((duration + Duration(seconds: adjust)).inHours)}';
-  String mins = ((duration + Duration(seconds: adjust)).inMinutes.remainder(60)).toString();
-  String secs = ((duration + Duration(seconds: adjust)).inSeconds.remainder(60)).toString();
+  String mins = ((duration + Duration(seconds: adjust)).inMinutes.remainder(60))
+      .toString();
+  String secs = ((duration + Duration(seconds: adjust)).inSeconds.remainder(60))
+      .toString();
   if (hrs == '0')
     hrs = '0h';
   else
@@ -169,14 +173,16 @@ String printDurationAlt(Duration duration, {int adjust = 0, bool round = false})
 ///
 /// [s] - The string to capitalize
 /// Returns the string with the first letter capitalized, or empty string if input is empty
-String capitalise(String s) => s.isNotEmpty ? '${s[0].toUpperCase()}${s.substring(1)}' : '';
+String capitalise(String s) =>
+    s.isNotEmpty ? '${s[0].toUpperCase()}${s.substring(1)}' : '';
 
 /// Rounds a double value to a specified number of decimal places.
 ///
 /// [value] - The double value to round
 /// [decimals] - Number of decimal places to round to
 /// Returns the rounded value as a double
-double roundDecimals(double value, int decimals) => double.parse(value.toStringAsFixed(decimals));
+double roundDecimals(double value, int decimals) =>
+    double.parse(value.toStringAsFixed(decimals));
 
 // ANSI color codes for terminal output formatting
 /// Clears the terminal screen and moves cursor to top-left

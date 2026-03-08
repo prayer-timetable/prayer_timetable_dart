@@ -52,7 +52,9 @@ int offsetHr(
   DateTime date,
   String timezone,
 ) {
-  int offset = tz.TZDateTime(tz.getLocation(timezone), date.year, 1, 1).timeZoneOffset.inHours;
+  int offset = tz.TZDateTime(tz.getLocation(timezone), date.year, 1, 1)
+      .timeZoneOffset
+      .inHours;
 
   return offset;
 }

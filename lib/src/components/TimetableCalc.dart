@@ -59,8 +59,8 @@ class TimetableCalc {
             method: adhan.CalculationMethod.muslimWorldLeague,
             fajrAngle: fajrAngle,
             ishaAngle: ishaAngle ?? fajrAngle,
-            highLatitudeRule:
-                _parseHighLatitudeRule(highLatitudeRule) ?? adhan.HighLatitudeRule.twilightAngle,
+            highLatitudeRule: _parseHighLatitudeRule(highLatitudeRule) ??
+                adhan.HighLatitudeRule.twilightAngle,
             madhab: _parseMadhab(madhab) ?? adhan.Madhab.shafi,
             adjustments: _parseAdjustments(adjustments) ??
                 {
@@ -202,7 +202,8 @@ class TimetableCalc {
   /// Example input: {'fajr': 2, 'dhuhr': -1, 'asr': 0}
   ///
   /// Returns null if the input is null or results in an empty map.
-  static Map<adhan.Prayer, int>? _parseAdjustments(Map<dynamic, dynamic>? adjustments) {
+  static Map<adhan.Prayer, int>? _parseAdjustments(
+      Map<dynamic, dynamic>? adjustments) {
     if (adjustments == null) return null;
     Map<adhan.Prayer, int> result = {};
 

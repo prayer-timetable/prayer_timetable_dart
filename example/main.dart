@@ -66,9 +66,12 @@ void basicExample() {
   print('\nPrayer Status:');
   print(
       '  Current prayer ID: ${timetable.utils.currentId} (${prayerNames[timetable.utils.currentId]})');
-  print('  Next prayer ID: ${timetable.utils.nextId} (${prayerNames[timetable.utils.nextId]})');
-  print('  Time until next prayer: ${formatDuration(timetable.utils.countDown)}');
-  print('  Prayer completion: ${timetable.utils.percentage.toStringAsFixed(1)}%');
+  print(
+      '  Next prayer ID: ${timetable.utils.nextId} (${prayerNames[timetable.utils.nextId]})');
+  print(
+      '  Time until next prayer: ${formatDuration(timetable.utils.countDown)}');
+  print(
+      '  Prayer completion: ${timetable.utils.percentage.toStringAsFixed(1)}%');
 }
 
 /// Advanced example with jamaah times and additional features
@@ -90,7 +93,14 @@ void advancedExample() {
       madhab: 'hanafi', // Hanafi madhab
     ),
     jamaahOn: true,
-    jamaahMethods: ['afterthis', '', 'afterthis', 'afterthis', 'afterthis', 'afterthis'],
+    jamaahMethods: [
+      'afterthis',
+      '',
+      'afterthis',
+      'afterthis',
+      'afterthis',
+      'afterthis'
+    ],
     jamaahOffsets: [
       [0, 15], // Fajr jamaah 15 minutes after adhan
       [0, 0], // Sunrise (no jamaah)
@@ -109,13 +119,15 @@ void advancedExample() {
 
   for (int i = 0; i < 6; i++) {
     Prayer prayer = timetable.current[i];
-    String prayerTimeStr = '${prayer.prayerTime.hour.toString().padLeft(2, '0')}:'
+    String prayerTimeStr =
+        '${prayer.prayerTime.hour.toString().padLeft(2, '0')}:'
         '${prayer.prayerTime.minute.toString().padLeft(2, '0')}';
 
     String output = '  ${prayerNames[i].padRight(8)}: $prayerTimeStr';
 
     if (prayer.jamaahTime != prayer.prayerTime && i != 1) {
-      String jamaahTimeStr = '${prayer.jamaahTime.hour.toString().padLeft(2, '0')}:'
+      String jamaahTimeStr =
+          '${prayer.jamaahTime.hour.toString().padLeft(2, '0')}:'
           '${prayer.jamaahTime.minute.toString().padLeft(2, '0')}';
       output = '$output (Jamaah: $jamaahTimeStr)';
     }
@@ -123,7 +135,8 @@ void advancedExample() {
     print(output);
 
     if (prayer.jamaahTime != prayer.prayerTime && i != 1) {
-      String jamaahTimeStr = '${prayer.jamaahTime.hour.toString().padLeft(2, '0')}:'
+      String jamaahTimeStr =
+          '${prayer.jamaahTime.hour.toString().padLeft(2, '0')}:'
           '${prayer.jamaahTime.minute.toString().padLeft(2, '0')}';
       print(' (Jamaah: $jamaahTimeStr)');
     } else {
@@ -133,7 +146,8 @@ void advancedExample() {
 
   // Islamic information
   print('\nIslamic Information:');
-  print('  Qibla direction: ${timetable.utils.qibla.toStringAsFixed(1)}° from North');
+  print(
+      '  Qibla direction: ${timetable.utils.qibla.toStringAsFixed(1)}° from North');
   print(
       '  Hijri date: ${timetable.utils.hijri[2]}/${timetable.utils.hijri[1]}/${timetable.utils.hijri[0]}');
   print('  Islamic midnight: ${formatTime(timetable.utils.midnight)}');
@@ -162,7 +176,8 @@ void monthlyExample() {
     jamaahOn: false,
   );
 
-  print('Monthly Prayer Times for Dubai (${getMonthName(now.month)} ${now.year}):');
+  print(
+      'Monthly Prayer Times for Dubai (${getMonthName(now.month)} ${now.year}):');
   print('Day  Fajr   Sunrise Dhuhr  Asr    Maghrib Isha');
   print('-' * 50);
 
@@ -173,7 +188,8 @@ void monthlyExample() {
 
     String line = '$dayStr   ';
     for (int i = 0; i < 6; i++) {
-      String timeStr = '${dayPrayers[i].prayerTime.hour.toString().padLeft(2, '0')}:'
+      String timeStr =
+          '${dayPrayers[i].prayerTime.hour.toString().padLeft(2, '0')}:'
           '${dayPrayers[i].prayerTime.minute.toString().padLeft(2, '0')}';
       line += timeStr.padRight(7);
     }
