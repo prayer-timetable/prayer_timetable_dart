@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.6] - 2025-03-08
+
+### Improved
+
+- **Platform Support**: Added explicit platform declarations for Android, iOS, Linux, macOS, Web, and Windows
+- **Code Quality**: Formatted all source files to follow Dart style guidelines for consistency
+- **Documentation**: Enhanced README with additional pub.dev score badges (pub points, popularity, likes)
+- **Package Metadata**: Improved pubspec.yaml structure for maximum pub.dev scoring
+
 ## [2.2.5] - 2025-03-08
 
 ### Changed

@@ -1,5 +1,5 @@
 name: prayer_timetable
-version: 2.2.5
+version: 2.2.6
 description: >-
     Comprehensive Dart library for Islamic prayer time calculations with multiple methods,
     jamaah time management, timezone support, and Hijri calendar integration.
