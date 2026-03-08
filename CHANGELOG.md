@@ -15,6 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Updated meta from 1.17.0 to 1.18.1
     - Updated source_span from 1.10.1 to 1.10.2
 
+### Improved
+
+- **Platform Support**: Added explicit platform declarations for Android, iOS, Linux, macOS, Web, and Windows
+- **Code Quality**: Formatted all source files to follow Dart style guidelines
+- **Documentation**: Enhanced README with additional pub.dev score badges (pub points, popularity, likes)
+- **Package Metadata**: Improved pubspec.yaml structure for better pub.dev scoring
+
 ## [2.2.4] - 2025-10-27
 
 ### Fixed
