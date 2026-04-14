@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.7] - 2026-04-14
+
+### Fixed
+
+- **DST Bug in Calculated Prayer Times**: Fixed prayer times being off by 1 hour during daylight saving time when using astronomical calculations (`timetableCalc`)
+    - Replaced `tz.TZDateTime(location, ..components..)` with `tz.TZDateTime.from()` for all 6 prayer times (fajr, sunrise, dhuhr, asr, maghrib, isha), preventing UTC components from being misinterpreted as local wall-clock time
+- **DST-Aware Timezone Offset**: Fixed `offsetHr()` in `tzTime.dart` to use the actual date instead of always checking January 1st, ensuring correct UTC offset during DST periods
+
 ## [2.2.6] - 2025-03-08
 
 ### Improved
