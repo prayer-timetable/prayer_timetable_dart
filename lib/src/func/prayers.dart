@@ -16,7 +16,7 @@ List<String> prayerNames = [
   'dhuhr',
   'asr',
   'maghrib',
-  'isha'
+  'isha',
 ];
 
 /// Generates prayer times for a single day using the specified calculation method.
@@ -64,21 +64,28 @@ List<Prayer> prayersGen(
   // Adjust date by Hijri offset for calendar alignment
   DateTime adjustedDate = date.add(Duration(days: hijriOffset));
   tz.TZDateTime timestamp = tz.TZDateTime(
-      tzGet,
-      adjustedDate.year,
-      adjustedDate.month,
-      adjustedDate.day,
-      adjustedDate.hour,
-      adjustedDate.minute,
-      adjustedDate.second);
+    tzGet,
+    adjustedDate.year,
+    adjustedDate.month,
+    adjustedDate.day,
+    adjustedDate.hour,
+    adjustedDate.minute,
+    adjustedDate.second,
+  );
 
   // Calculate day boundaries for prayer time calculations
-  DateTime dayBegin =
-      tz.TZDateTime(tzGet, timestamp.year, timestamp.month, timestamp.day)
-          .add(Duration(days: hijriOffset));
-  DateTime dayEnd =
-      tz.TZDateTime(tzGet, timestamp.year, timestamp.month, timestamp.day + 1)
-          .add(Duration(days: hijriOffset));
+  DateTime dayBegin = tz.TZDateTime(
+    tzGet,
+    timestamp.year,
+    timestamp.month,
+    timestamp.day,
+  ).add(Duration(days: hijriOffset));
+  DateTime dayEnd = tz.TZDateTime(
+    tzGet,
+    timestamp.year,
+    timestamp.month,
+    timestamp.day + 1,
+  ).add(Duration(days: hijriOffset));
 
   // DST adjustment: add 1 hour if daylight saving time is active
   int adjDst = timestamp.timeZone.isDst ? 1 : 0;
@@ -100,10 +107,10 @@ List<Prayer> prayersGen(
         timestamp.year,
         timestamp.month,
         timestamp.day,
-        timetableMap[timestamp.month.toString()][timestamp.day.toString()]
-            [prayerId][0],
-        timetableMap[timestamp.month.toString()][timestamp.day.toString()]
-            [prayerId][1],
+        timetableMap[timestamp.month.toString()][timestamp.day
+            .toString()][prayerId][0],
+        timetableMap[timestamp.month.toString()][timestamp.day
+            .toString()][prayerId][1],
       ).add(Duration(hours: adjDst));
 
       prayerEndTime = prayerId == 5
@@ -113,84 +120,74 @@ List<Prayer> prayersGen(
               timestamp.year,
               timestamp.month,
               timestamp.day,
-              timetableMap[timestamp.month.toString()][timestamp.day.toString()]
-                  [prayerId + 1][0],
-              timetableMap[timestamp.month.toString()][timestamp.day.toString()]
-                  [prayerId + 1][1],
+              timetableMap[timestamp.month.toString()][timestamp.day
+                  .toString()][prayerId + 1][0],
+              timetableMap[timestamp.month.toString()][timestamp.day
+                  .toString()][prayerId + 1][1],
             ).add(Duration(hours: adjDst));
     } else if (timetableList != null) {
       // Use list-based data with seconds from midnight
       prayerTime = dayEnd
-          .add(Duration(
+          .add(
+            Duration(
               hours: -24 + adjDst,
-              seconds: timetableList[timestamp.month - 1][timestamp.day - 1]
-                  [prayerId]))
-          .add(Duration(
+              seconds:
+                  timetableList[timestamp.month - 1][timestamp.day -
+                      1][prayerId],
+            ),
+          )
+          .add(
+            Duration(
               seconds: differences != null
                   ? differences[timestamp.month - 1][prayerId]
-                  : 0));
+                  : 0,
+            ),
+          );
 
       prayerEndTime = prayerId == 5
           ? dayEnd
           : dayEnd
-              .add(Duration(
-                  hours: -24 + adjDst,
-                  seconds: timetableList[timestamp.month - 1][timestamp.day - 1]
-                      [prayerId + 1]))
-              .add(Duration(
-                  seconds: differences != null
-                      ? differences[timestamp.month - 1][prayerId + 1]
-                      : 0));
+                .add(
+                  Duration(
+                    hours: -24 + adjDst,
+                    seconds:
+                        timetableList[timestamp.month - 1][timestamp.day -
+                            1][prayerId + 1],
+                  ),
+                )
+                .add(
+                  Duration(
+                    seconds: differences != null
+                        ? differences[timestamp.month - 1][prayerId + 1]
+                        : 0,
+                  ),
+                );
     } else if (timetableCalc != null) {
       // Use astronomical calculations for prayer times
-      DateTime fajrTime = tz.TZDateTime(
-          tzGet,
-          timetableCalc.prayerTimes.fajr.year,
-          timetableCalc.prayerTimes.fajr.month,
-          timetableCalc.prayerTimes.fajr.day,
-          timetableCalc.prayerTimes.fajr.hour,
-          timetableCalc.prayerTimes.fajr.minute,
-          timetableCalc.prayerTimes.fajr.second);
-      DateTime sunriseTime = tz.TZDateTime(
-          tzGet,
-          timetableCalc.prayerTimes.sunrise.year,
-          timetableCalc.prayerTimes.sunrise.month,
-          timetableCalc.prayerTimes.sunrise.day,
-          timetableCalc.prayerTimes.sunrise.hour,
-          timetableCalc.prayerTimes.sunrise.minute,
-          timetableCalc.prayerTimes.sunrise.second);
-      DateTime dhuhrTime = tz.TZDateTime(
-          tzGet,
-          timetableCalc.prayerTimes.dhuhr.year,
-          timetableCalc.prayerTimes.dhuhr.month,
-          timetableCalc.prayerTimes.dhuhr.day,
-          timetableCalc.prayerTimes.dhuhr.hour,
-          timetableCalc.prayerTimes.dhuhr.minute,
-          timetableCalc.prayerTimes.dhuhr.second);
-      DateTime asrTime = tz.TZDateTime(
-          tzGet,
-          timetableCalc.prayerTimes.asr.year,
-          timetableCalc.prayerTimes.asr.month,
-          timetableCalc.prayerTimes.asr.day,
-          timetableCalc.prayerTimes.asr.hour,
-          timetableCalc.prayerTimes.asr.minute,
-          timetableCalc.prayerTimes.asr.second);
-      DateTime maghribTime = tz.TZDateTime(
-          tzGet,
-          timetableCalc.prayerTimes.maghrib.year,
-          timetableCalc.prayerTimes.maghrib.month,
-          timetableCalc.prayerTimes.maghrib.day,
-          timetableCalc.prayerTimes.maghrib.hour,
-          timetableCalc.prayerTimes.maghrib.minute,
-          timetableCalc.prayerTimes.maghrib.second);
-      DateTime ishaTime = tz.TZDateTime(
-          tzGet,
-          timetableCalc.prayerTimes.isha.year,
-          timetableCalc.prayerTimes.isha.month,
-          timetableCalc.prayerTimes.isha.day,
-          timetableCalc.prayerTimes.isha.hour,
-          timetableCalc.prayerTimes.isha.minute,
-          timetableCalc.prayerTimes.isha.second);
+      DateTime fajrTime = tz.TZDateTime.from(
+        timetableCalc.prayerTimes.fajr,
+        tzGet,
+      );
+      DateTime sunriseTime = tz.TZDateTime.from(
+        timetableCalc.prayerTimes.sunrise,
+        tzGet,
+      );
+      DateTime dhuhrTime = tz.TZDateTime.from(
+        timetableCalc.prayerTimes.dhuhr,
+        tzGet,
+      );
+      DateTime asrTime = tz.TZDateTime.from(
+        timetableCalc.prayerTimes.asr,
+        tzGet,
+      );
+      DateTime maghribTime = tz.TZDateTime.from(
+        timetableCalc.prayerTimes.maghrib,
+        tzGet,
+      );
+      DateTime ishaTime = tz.TZDateTime.from(
+        timetableCalc.prayerTimes.isha,
+        tzGet,
+      );
 
       if (prayerId == 0) {
         prayerTime = fajrTime;
@@ -232,12 +229,13 @@ List<Prayer> prayersGen(
     } else if (jamaahMethods[prayerId] == 'fixed') {
       // Fixed jamaah time regardless of prayer time
       prayer.jamaahTime = tz.TZDateTime(
-          tzGet,
-          prayerTime.year,
-          prayerTime.month,
-          prayerTime.day,
-          jamaahOffsets[prayerId][0],
-          jamaahOffsets[prayerId][1]);
+        tzGet,
+        prayerTime.year,
+        prayerTime.month,
+        prayerTime.day,
+        jamaahOffsets[prayerId][0],
+        jamaahOffsets[prayerId][1],
+      );
     } else {
       prayer.jamaahTime = prayerTime;
     }
@@ -248,22 +246,27 @@ List<Prayer> prayersGen(
     // Handle prayer joining (combining prayers)
     if (joinMaghrib && prayerId == 5) {
       // Join Isha with Maghrib
-      prayer.prayerTime =
-          prayers[4].jamaahTime.add(Duration(minutes: prayerLength ?? 10));
-      prayer.jamaahTime =
-          prayers[4].jamaahTime.add(Duration(minutes: prayerLength ?? 10));
+      prayer.prayerTime = prayers[4].jamaahTime.add(
+        Duration(minutes: prayerLength ?? 10),
+      );
+      prayer.jamaahTime = prayers[4].jamaahTime.add(
+        Duration(minutes: prayerLength ?? 10),
+      );
     }
     if (joinDhuhr && prayerId == 3) {
       // Join Asr with Dhuhr
-      prayer.prayerTime =
-          prayers[2].jamaahTime.add(Duration(minutes: prayerLength ?? 10));
-      prayer.jamaahTime =
-          prayers[2].jamaahTime.add(Duration(minutes: prayerLength ?? 10));
+      prayer.prayerTime = prayers[2].jamaahTime.add(
+        Duration(minutes: prayerLength ?? 10),
+      );
+      prayer.jamaahTime = prayers[2].jamaahTime.add(
+        Duration(minutes: prayerLength ?? 10),
+      );
     }
 
     // Set jamaah pending status
     if (jamaahOn) {
-      prayer.isJamaahPending = timestamp.isAfter(prayer.prayerTime) &&
+      prayer.isJamaahPending =
+          timestamp.isAfter(prayer.prayerTime) &&
           timestamp.isBefore(prayer.jamaahTime);
     }
 

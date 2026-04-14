@@ -20,8 +20,15 @@ import 'package:timezone/timezone.dart' as tz;
 /// [second] - Optional second (defaults to current second)
 ///
 /// Returns a timezone-aware DateTime object
-DateTime nowTZ(String timezone,
-    {int? year, int? month, int? day, int? hour, int? minute, int? second}) {
+DateTime nowTZ(
+  String timezone, {
+  int? year,
+  int? month,
+  int? day,
+  int? hour,
+  int? minute,
+  int? second,
+}) {
   tz.setLocalLocation(tz.getLocation(timezone));
   DateTime now = tz.TZDateTime.now(tz.getLocation(timezone));
 
@@ -48,13 +55,13 @@ DateTime nowTZ(String timezone,
 /// [timezone] - The timezone identifier
 ///
 /// Returns the UTC offset in hours (can be negative)
-int offsetHr(
-  DateTime date,
-  String timezone,
-) {
-  int offset = tz.TZDateTime(tz.getLocation(timezone), date.year, 1, 1)
-      .timeZoneOffset
-      .inHours;
+int offsetHr(DateTime date, String timezone) {
+  int offset = tz.TZDateTime(
+    tz.getLocation(timezone),
+    date.year,
+    date.month,
+    date.day,
+  ).timeZoneOffset.inHours;
 
   return offset;
 }
