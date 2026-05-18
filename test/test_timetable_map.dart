@@ -1,5 +1,5 @@
 import 'package:prayer_timetable/src/PrayerTimetable.dart';
-import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 import 'src/timetable_map_dublin.dart';

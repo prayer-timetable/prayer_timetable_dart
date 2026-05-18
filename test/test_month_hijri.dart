@@ -1,7 +1,7 @@
 import 'package:date_format/date_format.dart';
 import 'package:prayer_timetable/prayer_timetable.dart';
 import 'package:prayer_timetable/src/func/helpers.dart';
-import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 // ignore: unused_import
 import 'src/timetable_map_dublin.dart';

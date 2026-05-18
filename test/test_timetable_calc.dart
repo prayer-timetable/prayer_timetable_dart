@@ -1,7 +1,7 @@
 import 'package:adhan_dart/adhan_dart.dart' as adhan;
 import 'package:prayer_timetable/src/PrayerTimetable.dart';
 import 'package:prayer_timetable/src/components/TimetableCalc.dart';
-import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 // ignore: unused_import

@@ -8,7 +8,7 @@
 /// - Hijri calendar integration
 
 import 'package:prayer_timetable/prayer_timetable.dart';
-import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/data/latest_all.dart' as tz;
 
 void main() {
   // Initialize timezone data (required for timezone calculations)

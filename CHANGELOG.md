@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2026-05-19
+
+### Changed
+
+- **Dependency Updates**: Updated core dependencies to latest compatible versions
+    - `adhan_dart` upgraded from ^1.2.0 to ^2.0.1 (new calculation methods, API improvements, no breaking changes for this package's usage)
+    - `timezone` confirmed at ^0.11.0 (latest; IANA 2025c data, `Location.offset` is now `Duration`)
+    - Minimum Dart SDK raised to `>=3.10.0` (required by `timezone` 0.11)
+
+### Fixed
+
+- **Timezone Database Coverage**: Switched all timezone initialisation from `package:timezone/data/latest.dart` to `latest_all.dart`
+    - `latest.dart` in timezone 0.11+ embeds a reduced zone set; zones such as `Europe/Sarajevo` were missing at runtime
+    - Full IANA database now loaded in tests, examples, and README snippets
+
+### Added
+
+- **Edge-Case Test Suite**: Added `test/edge_cases.dart` covering maghrib→isha transitions, post-isha countdown to next-day fajr, midnight, and DST boundaries across calc, map, and list modes
+
 ## [2.2.7] - 2026-04-14
 
 ### Fixed

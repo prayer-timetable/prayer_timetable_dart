@@ -43,7 +43,7 @@ Generate and display prayer times for a single day:
 
 ```dart
 import 'package:prayer_timetable/prayer_timetable.dart';
-import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/data/latest_all.dart' as tz;
 
 void main() {
   tz.initializeTimeZones();
@@ -103,7 +103,7 @@ Generate a complete monthly prayer schedule:
 
 ```dart
 import 'package:prayer_timetable/prayer_timetable.dart';
-import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/data/latest_all.dart' as tz;
 
 void main() {
   tz.initializeTimeZones();
