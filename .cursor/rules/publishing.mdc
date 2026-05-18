@@ -1,0 +1,66 @@
+---
+description: Pre-publish checklist before releasing prayer_timetable to pub.dev
+alwaysApply: false
+---
+
+# Publishing prayer_timetable
+
+When the user asks to publish, release, or bump a version, complete **every** step below in order. Do not run `dart pub publish` until all checks pass.
+
+## 1. Version bump
+
+- Set `version` in `pubspec.yaml` to the new release (semver).
+- Add a `[x.y.z] - YYYY-MM-DD` section at the top of `CHANGELOG.md` with user-facing changes.
+
+## 2. README version
+
+- README **Installation** block must reference the new version, e.g. `prayer_timetable: ^2.3.0`.
+- Version in README must match `pubspec.yaml` (same major.minor at minimum).
+
+```yaml
+# ✅ matches pubspec version 2.3.0
+dependencies:
+    prayer_timetable: ^2.3.0
+```
+
+## 3. Lint and typecheck
+
+Run and fix any issues before committing:
+
+```bash
+dart analyze
+dart pub publish --dry-run
+```
+
+Optional but recommended for this repo:
+
+```bash
+dart run test/edge_cases.dart
+```
+
+## 4. Git push
+
+- Commit all release files (`pubspec.yaml`, `CHANGELOG.md`, `README.md`, and any code changes).
+- Push to `origin` before publishing. `dart pub publish --dry-run` warns on dirty or unpushed git state.
+
+```bash
+git status   # must be clean after commit
+git push origin master
+```
+
+## 5. Publish
+
+Only after steps 1–4:
+
+```bash
+dart pub publish --force
+```
+
+## Quick verification script
+
+```bash
+VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
+grep -q "prayer_timetable: ^$VERSION" README.md || echo "README version mismatch"
+head -20 CHANGELOG.md | grep -q "\\[$VERSION\\]" || echo "CHANGELOG entry missing"
+dart analyze && dart pub publish --dry-run
+```
