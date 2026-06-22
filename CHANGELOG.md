@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.2] - 2026-06-22
+
+### Fixed
+
+- **DST Calculation**: Fixed location-aware DST validation in `isDSTCalc` and `isDST` helper functions when using `TZDateTime` objects. This resolves time offset miscalculations on host/server environments situated in a different local timezone than the target calculation location.
+- **Example Script**: Fixed a duplicate printing formatting bug in `example/main.dart` where the jamaah time suffix was printed twice.
+
 ## [2.3.1] - 2026-05-19
 
 ### Fixed
