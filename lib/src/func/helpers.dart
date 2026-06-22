@@ -4,6 +4,8 @@
 /// library for time calculations, formatting, and various helper operations.
 library;
 
+import 'package:timezone/timezone.dart' as tz;
+
 /// Determines if a given date is during Daylight Saving Time (DST).
 ///
 /// This function compares the timezone offset of the given date with
@@ -12,8 +14,12 @@ library;
 ///
 /// [d] - The date to check for DST
 /// Returns true if the date is during DST, false otherwise
-bool isDSTCalc(DateTime d) =>
-    DateTime(d.year, 6, 1).timeZoneOffset == d.timeZoneOffset;
+bool isDSTCalc(DateTime d) {
+  if (d is tz.TZDateTime) {
+    return d.timeZone.isDst;
+  }
+  return DateTime(d.year, 6, 1).timeZoneOffset == d.timeZoneOffset;
+}
 
 /// Rounds a numeric value to 2 decimal places.
 ///
@@ -96,6 +102,9 @@ String toTwoDigitString(int value) {
 /// [d] - The date to check for DST
 /// Returns true if the date is during DST
 bool isDST(DateTime d) {
+  if (d is tz.TZDateTime) {
+    return d.timeZone.isDst;
+  }
   var jul = DateTime(d.year, 6, 1).timeZoneOffset;
   return jul == d.timeZoneOffset;
 }

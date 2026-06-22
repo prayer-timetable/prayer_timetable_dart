@@ -133,15 +133,6 @@ void advancedExample() {
     }
 
     print(output);
-
-    if (prayer.jamaahTime != prayer.prayerTime && i != 1) {
-      String jamaahTimeStr =
-          '${prayer.jamaahTime.hour.toString().padLeft(2, '0')}:'
-          '${prayer.jamaahTime.minute.toString().padLeft(2, '0')}';
-      print(' (Jamaah: $jamaahTimeStr)');
-    } else {
-      print('');
-    }
   }
 
   // Islamic information
