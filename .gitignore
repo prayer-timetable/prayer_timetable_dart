@@ -22,3 +22,7 @@ doc/api/
 
 # Editor
 .vscode/
+# macOS / IDE junk
+.DS_Store
+.idea/
+*.iml

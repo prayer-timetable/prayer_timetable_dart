@@ -1,5 +1,7 @@
 import 'package:prayer_timetable/prayer_timetable.dart';
+import 'package:prayer_timetable/src/func/helpers.dart';
 import 'package:prayer_timetable/src/func/prayers.dart';
+import 'package:timezone/timezone.dart' as tz;
 // import 'timetable_map.dart';
 // import 'package:timezone/data/latest.dart' as tz;
 
@@ -49,16 +51,23 @@ List<List<Prayer>> monthHijriGen(
   // int daysInHijriMonth = 30;
   int daysInHijriMonth = hDate.lengthOfMonth;
 
-  DateTime startDate =
-      hDate.hijriToGregorian(hYear, hMonth, hDay).add(Duration(hours: 3));
+  DateTime startDate = tz.TZDateTime(
+    tz.getLocation(timezone),
+    hDate.hijriToGregorian(hYear, hMonth, hDay).year,
+    hDate.hijriToGregorian(hYear, hMonth, hDay).month,
+    hDate.hijriToGregorian(hYear, hMonth, hDay).day,
+    3, // after the 1 am time change, in the target zone
+  );
 
   List<List<Prayer>> prayerList = List.generate(daysInHijriMonth, (index) {
+    // Step calendar days, so a 23- or 25-hour day keeps the month on track.
+    final dayDate = dateByAddingDays(startDate, index);
     return prayersGen(
-      startDate.add(Duration(days: index)),
+      dayDate,
       timetableMap: timetable,
       timetableList: list,
       differences: differences,
-      timetableCalc: calc?.copyWith(date: startDate.add(Duration(days: index))),
+      timetableCalc: calc?.copyWith(date: dayDate),
       timezone: timezone,
       hijriOffset: hijriOffset,
       jamaahOn: jamaahOn,

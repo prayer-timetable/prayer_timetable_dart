@@ -4,6 +4,8 @@ library;
 import 'package:adhan_dart/adhan_dart.dart' as adhan;
 import 'package:prayer_timetable/src/PrayerTimetable.dart';
 import 'package:prayer_timetable/src/components/TimetableCalc.dart';
+import 'package:prayer_timetable/src/components/Utils.dart';
+import 'package:prayer_timetable/src/func/helpers.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -27,7 +29,12 @@ void check(String name, bool condition, [String? detail]) {
   }
 }
 
-void checkCountdown(String name, PrayerTimetable loc, Duration expectedMin, Duration expectedMax) {
+void checkCountdown(
+  String name,
+  PrayerTimetable loc,
+  Duration expectedMin,
+  Duration expectedMax,
+) {
   final cd = loc.utils.countDown;
   check(
     name,
@@ -55,7 +62,14 @@ PrayerTimetable calcAt(tz.TZDateTime time, {bool jamaahOn = false}) {
     minute: time.minute,
     second: time.second,
     jamaahOn: jamaahOn,
-    jamaahMethods: ['afterthis', '', 'afterthis', 'afterthis', 'afterthis', 'afterthis'],
+    jamaahMethods: [
+      'afterthis',
+      '',
+      'afterthis',
+      'afterthis',
+      'afterthis',
+      'afterthis',
+    ],
     jamaahOffsets: [
       [0, 15],
       [0, 0],
@@ -78,7 +92,14 @@ PrayerTimetable mapAt(tz.TZDateTime time) {
     minute: time.minute,
     second: time.second,
     jamaahOn: true,
-    jamaahMethods: ['afterthis', '', 'afterthis', 'afterthis', 'afterthis', 'fixed'],
+    jamaahMethods: [
+      'afterthis',
+      '',
+      'afterthis',
+      'afterthis',
+      'afterthis',
+      'fixed',
+    ],
     jamaahOffsets: [
       [0, 15],
       [0, 0],
@@ -115,7 +136,14 @@ PrayerTimetable listAt(tz.TZDateTime time) {
     minute: time.minute,
     second: time.second,
     jamaahOn: true,
-    jamaahMethods: ['afterthis', '', 'afterthis', 'afterthis', 'afterthis', 'afterthis'],
+    jamaahMethods: [
+      'afterthis',
+      '',
+      'afterthis',
+      'afterthis',
+      'afterthis',
+      'afterthis',
+    ],
     jamaahOffsets: [
       [0, 15],
       [0, 0],
@@ -128,11 +156,23 @@ PrayerTimetable listAt(tz.TZDateTime time) {
   );
 }
 
-tz.TZDateTime dublin(int y, int m, int d, [int h = 0, int min = 0, int s = 0]) =>
-    tz.TZDateTime(tz.getLocation(timezoneI), y, m, d, h, min, s);
+tz.TZDateTime dublin(
+  int y,
+  int m,
+  int d, [
+  int h = 0,
+  int min = 0,
+  int s = 0,
+]) => tz.TZDateTime(tz.getLocation(timezoneI), y, m, d, h, min, s);
 
-tz.TZDateTime sarajevo(int y, int m, int d, [int h = 0, int min = 0, int s = 0]) =>
-    tz.TZDateTime(tz.getLocation(timezoneS), y, m, d, h, min, s);
+tz.TZDateTime sarajevo(
+  int y,
+  int m,
+  int d, [
+  int h = 0,
+  int min = 0,
+  int s = 0,
+]) => tz.TZDateTime(tz.getLocation(timezoneS), y, m, d, h, min, s);
 
 void runCalcEdgeCases() {
   print('\n=== calc (Dublin) ===');
@@ -145,29 +185,42 @@ void runCalcEdgeCases() {
   check('after isha: currentId=5', locAfterIsha.utils.currentId == 5);
   check('after isha: nextId=0', locAfterIsha.utils.nextId == 0);
   check('after isha: isAfterIsha', locAfterIsha.utils.isAfterIsha);
-  check('after isha: next is tomorrow fajr', locAfterIsha.utils.next == nextFajr);
+  check(
+    'after isha: next is tomorrow fajr',
+    locAfterIsha.utils.next == nextFajr,
+  );
   check('after isha: next fajr is next day', nextFajr.day == 20);
-  check('after isha: countDown positive', locAfterIsha.utils.countDown.inSeconds > 0);
+  check(
+    'after isha: countDown positive',
+    locAfterIsha.utils.countDown.inSeconds > 0,
+  );
   check(
     'after isha: countDown matches fajr delta',
     locAfterIsha.utils.countDown == nextFajr.difference(afterIsha),
     'cd=${locAfterIsha.utils.countDown} delta=${nextFajr.difference(afterIsha)}',
   );
-  checkCountdown('after isha: countdown under 8h', locAfterIsha, Duration.zero, const Duration(hours: 8));
+  checkCountdown(
+    'after isha: countdown under 8h',
+    locAfterIsha,
+    Duration.zero,
+    const Duration(hours: 8),
+  );
 
   // Maghrib → isha window
   final maghrib = locAfterIsha.current[4].prayerTime;
   final ishaTime = locAfterIsha.current[5].prayerTime;
   final betweenMaghribIsha = maghrib.add(Duration(minutes: 5));
-  final locMagIsha = calcAt(tz.TZDateTime(
-    tz.getLocation(timezoneI),
-    betweenMaghribIsha.year,
-    betweenMaghribIsha.month,
-    betweenMaghribIsha.day,
-    betweenMaghribIsha.hour,
-    betweenMaghribIsha.minute,
-    betweenMaghribIsha.second,
-  ));
+  final locMagIsha = calcAt(
+    tz.TZDateTime(
+      tz.getLocation(timezoneI),
+      betweenMaghribIsha.year,
+      betweenMaghribIsha.month,
+      betweenMaghribIsha.day,
+      betweenMaghribIsha.hour,
+      betweenMaghribIsha.minute,
+      betweenMaghribIsha.second,
+    ),
+  );
   check('maghrib→isha: currentId=4', locMagIsha.utils.currentId == 4);
   check('maghrib→isha: nextId=5', locMagIsha.utils.nextId == 5);
   check('maghrib→isha: not after isha', !locMagIsha.utils.isAfterIsha);
@@ -180,19 +233,34 @@ void runCalcEdgeCases() {
   // Midnight before fajr
   final beforeFajr = dublin(2025, 5, 20, 2, 30);
   final locMidnight = calcAt(beforeFajr);
-  check('midnight: currentId=5 (isha period)', locMidnight.utils.currentId == 5);
+  check(
+    'midnight: currentId=5 (isha period)',
+    locMidnight.utils.currentId == 5,
+  );
   check('midnight: nextId=0', locMidnight.utils.nextId == 0);
   check('midnight: not isAfterIsha flag', !locMidnight.utils.isAfterIsha);
-  check('midnight: next is today fajr', locMidnight.utils.next == locMidnight.current[0].prayerTime);
-  check('midnight: countDown positive', locMidnight.utils.countDown.inMinutes > 0);
-  check('midnight: countDown under 4h', locMidnight.utils.countDown.inHours < 4);
+  check(
+    'midnight: next is today fajr',
+    locMidnight.utils.next == locMidnight.current[0].prayerTime,
+  );
+  check(
+    'midnight: countDown positive',
+    locMidnight.utils.countDown.inMinutes > 0,
+  );
+  check(
+    'midnight: countDown under 4h',
+    locMidnight.utils.countDown.inHours < 4,
+  );
 
   // DST spring forward day (Ireland: last Sunday March, 2025-03-30)
   final dstSpring = dublin(2025, 3, 30, 14, 0);
   final locSpring = calcAt(dstSpring);
   check('DST spring: prayers ordered', _prayersOrdered(locSpring.current));
   check('DST spring: isDst', dstSpring.timeZone.isDst);
-  check('DST spring: fajr before sunrise', locSpring.current[0].prayerTime.isBefore(locSpring.current[1].prayerTime));
+  check(
+    'DST spring: fajr before sunrise',
+    locSpring.current[0].prayerTime.isBefore(locSpring.current[1].prayerTime),
+  );
 
   // DST fall back eve (2025-10-25 23:41 — still IST +1)
   final dstFallEve = dublin(2025, 10, 25, 23, 41, 55);
@@ -200,7 +268,10 @@ void runCalcEdgeCases() {
   check('DST fall eve: isDst', dstFallEve.timeZone.isDst);
   check('DST fall eve: after isha', locFallEve.utils.isAfterIsha);
   check('DST fall eve: next fajr next day', locFallEve.utils.next.day == 26);
-  check('DST fall eve: countdown positive', locFallEve.utils.countDown.inHours < 7);
+  check(
+    'DST fall eve: countdown positive',
+    locFallEve.utils.countDown.inHours < 7,
+  );
 
   // DST fall back day (2025-10-26 — clocks back to GMT)
   final dstFallDay = dublin(2025, 10, 26, 18, 47);
@@ -213,8 +284,14 @@ void runCalcEdgeCases() {
   final locJamaah = calcAt(jamaahTime, jamaahOn: true);
   if (jamaahTime.isBefore(locJamaah.current[5].jamaahTime)) {
     check('isha jamaah pending: currentId=5', locJamaah.utils.currentId == 5);
-    check('isha jamaah pending: isJamaahPending', locJamaah.utils.isJamaahPending);
-    check('isha jamaah pending: not after isha yet', !locJamaah.utils.isAfterIsha);
+    check(
+      'isha jamaah pending: isJamaahPending',
+      locJamaah.utils.isJamaahPending,
+    );
+    check(
+      'isha jamaah pending: not after isha yet',
+      !locJamaah.utils.isAfterIsha,
+    );
   }
 
   print('  isha=$isha maghrib=$maghrib nextFajr=$nextFajr');
@@ -229,7 +306,10 @@ void runMapEdgeCases() {
   check('map after isha: isAfterIsha', loc.utils.isAfterIsha);
   check('map after isha: currentId=5', loc.utils.currentId == 5);
   check('map after isha: nextId=0', loc.utils.nextId == 0);
-  check('map after isha: countdown positive', loc.utils.countDown.inSeconds > 0);
+  check(
+    'map after isha: countdown positive',
+    loc.utils.countDown.inSeconds > 0,
+  );
   check(
     'map after isha: countdown matches next fajr',
     loc.utils.countDown == loc.utils.next.difference(afterIsha),
@@ -241,41 +321,62 @@ void runMapEdgeCases() {
   final maghribTime = loc.current[4].prayerTime;
   final maghribJamaah = loc.current[4].jamaahTime;
   final between = maghribJamaah.add(const Duration(minutes: 7));
-  final locMid = mapAt(tz.TZDateTime(
-    tz.getLocation(timezoneI),
-    between.year,
-    between.month,
-    between.day,
-    between.hour,
-    between.minute,
-    between.second,
-  ));
+  final locMid = mapAt(
+    tz.TZDateTime(
+      tz.getLocation(timezoneI),
+      between.year,
+      between.month,
+      between.day,
+      between.hour,
+      between.minute,
+      between.second,
+    ),
+  );
   check('map maghrib→isha: currentId=4', locMid.utils.currentId == 4);
-  check('map maghrib→isha: next is isha', locMid.utils.next == locMid.current[5].prayerTime);
-  check('map maghrib→isha: countdown to isha', locMid.utils.countDown.inMinutes < 90);
+  check(
+    'map maghrib→isha: next is isha',
+    locMid.utils.next == locMid.current[5].prayerTime,
+  );
+  check(
+    'map maghrib→isha: countdown to isha',
+    locMid.utils.countDown.inMinutes < 90,
+  );
 
   // Maghrib adhan→jamaah pending
   final beforeJamaah = maghribTime.add(const Duration(minutes: 5));
-  final locPending = mapAt(tz.TZDateTime(
-    tz.getLocation(timezoneI),
-    beforeJamaah.year,
-    beforeJamaah.month,
-    beforeJamaah.day,
-    beforeJamaah.hour,
-    beforeJamaah.minute,
-    beforeJamaah.second,
-  ));
-  check('map maghrib jamaah pending: next is maghrib jamaah', locPending.utils.next == maghribJamaah);
-  check('map maghrib jamaah pending: isJamaahPending', locPending.utils.isJamaahPending);
+  final locPending = mapAt(
+    tz.TZDateTime(
+      tz.getLocation(timezoneI),
+      beforeJamaah.year,
+      beforeJamaah.month,
+      beforeJamaah.day,
+      beforeJamaah.hour,
+      beforeJamaah.minute,
+      beforeJamaah.second,
+    ),
+  );
+  check(
+    'map maghrib jamaah pending: next is maghrib jamaah',
+    locPending.utils.next == maghribJamaah,
+  );
+  check(
+    'map maghrib jamaah pending: isJamaahPending',
+    locPending.utils.isJamaahPending,
+  );
 
   // Midnight before fajr
   final midnight = dublin(2025, 10, 26, 1, 30);
   final locMidnight = mapAt(midnight);
   check('map midnight: currentId=5', locMidnight.utils.currentId == 5);
   check('map midnight: not isAfterIsha', !locMidnight.utils.isAfterIsha);
-  check('map midnight: countdown to fajr', locMidnight.utils.countDown.inHours < 5);
+  check(
+    'map midnight: countdown to fajr',
+    locMidnight.utils.countDown.inHours < 5,
+  );
 
-  print('  maghrib=$maghribTime isha=${loc.current[5].prayerTime} nextFajr=${loc.utils.next}');
+  print(
+    '  maghrib=$maghribTime isha=${loc.current[5].prayerTime} nextFajr=${loc.utils.next}',
+  );
 }
 
 void runListEdgeCases() {
@@ -301,12 +402,19 @@ void runListEdgeCases() {
   check('list after isha: isAfterIsha', loc.utils.isAfterIsha);
   check('list after isha: currentId=5', loc.utils.currentId == 5);
   check('list after isha: nextId=0', loc.utils.nextId == 0);
-  check('list after isha: countdown positive', loc.utils.countDown.inSeconds > 0);
+  check(
+    'list after isha: countdown positive',
+    loc.utils.countDown.inSeconds > 0,
+  );
   check(
     'list after isha: countdown matches next fajr',
     loc.utils.countDown == loc.utils.next.difference(afterIsha),
   );
-  check('list after isha: next fajr is next calendar day', loc.utils.next.day == afterIsha.day + 1 || loc.utils.next.month != afterIsha.month);
+  check(
+    'list after isha: next fajr is next calendar day',
+    loc.utils.next.day == afterIsha.day + 1 ||
+        loc.utils.next.month != afterIsha.month,
+  );
 
   // Maghrib→isha (from test_timetable_list scenario: 17:59)
   final maghribWindow = sarajevo(2025, 10, 26, 17, 59, 55);
@@ -314,23 +422,271 @@ void runListEdgeCases() {
   check('list maghrib window: currentId=4', locMag.utils.currentId == 4);
   check('list maghrib window: nextId=5', locMag.utils.nextId == 5);
   check('list maghrib window: not after isha', !locMag.utils.isAfterIsha);
-  check('list maghrib window: countdown under 2h', locMag.utils.countDown.inHours < 2);
+  check(
+    'list maghrib window: countdown under 2h',
+    locMag.utils.countDown.inHours < 2,
+  );
 
   // Midnight before fajr
   final beforeFajr = sarajevo(2025, 10, 27, 3, 0);
   final locMid = listAt(beforeFajr);
   check('list midnight: currentId=5', locMid.utils.currentId == 5);
   check('list midnight: not isAfterIsha', !locMid.utils.isAfterIsha);
-  check('list midnight: countdown positive', locMid.utils.countDown.inMinutes > 0);
+  check(
+    'list midnight: countdown positive',
+    locMid.utils.countDown.inMinutes > 0,
+  );
 
   print('  isha=$isha afterIsha=$afterIsha nextFajr=${loc.utils.next}');
 }
 
 bool _prayersOrdered(List prayers) {
   for (var i = 0; i < 5; i++) {
-    if (!prayers[i].prayerTime.isBefore(prayers[i + 1].prayerTime)) return false;
+    if (!prayers[i].prayerTime.isBefore(prayers[i + 1].prayerTime))
+      return false;
   }
   return true;
+}
+
+String _timesOf(List prayers) => prayers
+    .map((p) => '${p.name}=${p.prayerTime.toIso8601String().substring(5, 16)}')
+    .join(' ');
+
+/// Calculates one day for an arbitrary zone and coordinates.
+PrayerTimetable calcAtZone(
+  String zoneName, {
+  required int year,
+  required int month,
+  required int day,
+  int hour = 3,
+  int hijriOffset = 0,
+  required double lat,
+  required double lng,
+}) {
+  final calc = TimetableCalc(
+    date: tz.TZDateTime(tz.getLocation(zoneName), year, month, day, hour),
+    timezone: zoneName,
+    lat: lat,
+    lng: lng,
+    precision: true,
+    fajrAngle: angleI,
+    highLatitudeRule: adhan.HighLatitudeRule.twilightAngle.name,
+  );
+  return PrayerTimetable.calc(
+    timetableCalc: calc,
+    year: year,
+    month: month,
+    day: day,
+    hour: hour,
+    hijriOffset: hijriOffset,
+    jamaahOn: false,
+    timezone: zoneName,
+  );
+}
+
+void runDstCalendarEdgeCases() {
+  print('\n=== DST calendar days ===');
+
+  // 25-hour autumn day (Ireland falls back at 02:00 on 2026-10-25), asked for
+  // at local midnight: a fixed 24-hour step used to leave the next day on the
+  // same date and push isha ahead of maghrib.
+  final fall = calcAtZone(
+    'Europe/Dublin',
+    year: 2026,
+    month: 10,
+    day: 25,
+    hour: 0,
+    lat: latI,
+    lng: lngI,
+  );
+  check(
+    'fall 00:00: prayers ordered',
+    _prayersOrdered(fall.current),
+    _timesOf(fall.current),
+  );
+  check(
+    'fall 00:00: fajr on the 25th',
+    fall.current[0].prayerTime.day == 25,
+    '${fall.current[0].prayerTime}',
+  );
+  check(
+    'fall 00:00: tomorrow is the 26th',
+    fall.next[0].prayerTime.day == 26,
+    '${fall.next[0].prayerTime}',
+  );
+
+  // Zones that move the clock forward at 00:00: the next day has no midnight,
+  // so a calendar-day step must not fall back onto the previous date.
+  final spring = [
+    ['Africa/Cairo', 30.0444, 31.2357, 2026, 4, 23],
+    ['Asia/Beirut', 33.8938, 35.5018, 2026, 3, 28],
+  ];
+  for (final z in spring) {
+    final zoneName = z[0] as String;
+    final lat = z[1] as double;
+    final lng = z[2] as double;
+    final year = z[3] as int;
+    final month = z[4] as int;
+    final day = z[5] as int;
+    for (final hour in [0, 23]) {
+      final loc = calcAtZone(
+        zoneName,
+        year: year,
+        month: month,
+        day: day,
+        hour: hour,
+        lat: lat,
+        lng: lng,
+      );
+      check(
+        '$zoneName ${month.toString().padLeft(2, '0')}/$day $hour:00: '
+        'prayers ordered',
+        _prayersOrdered(loc.current),
+        _timesOf(loc.current),
+      );
+      check(
+        '$zoneName ${month.toString().padLeft(2, '0')}/$day $hour:00: '
+            'fajr on day $day',
+        loc.current[0].prayerTime.day == day,
+        '${loc.current[0].prayerTime}',
+      );
+      check(
+        '$zoneName ${month.toString().padLeft(2, '0')}/$day $hour:00: '
+            'tomorrow is day ${day + 1}',
+        loc.next[0].prayerTime.day == day + 1,
+        '${loc.next[0].prayerTime}',
+      );
+    }
+  }
+
+  // A whole month spanning both changes: every day must be ordered and land on
+  // its own calendar date, which a fixed 24-hour step breaks from the first
+  // transition onwards.
+  for (final month in [3, 10]) {
+    final calc = TimetableCalc(
+      date: tz.TZDateTime(tz.getLocation(timezoneI), 2026, month, 1, 3),
+      timezone: timezoneI,
+      lat: latI,
+      lng: lngI,
+      precision: true,
+      fajrAngle: angleI,
+      highLatitudeRule: adhan.HighLatitudeRule.twilightAngle.name,
+    );
+    final days = PrayerTimetable.monthTable(
+      2026,
+      month,
+      calc: calc,
+      timezone: timezoneI,
+    );
+    final expectedDays = DateTime.utc(2026, month + 1, 0).day;
+    check(
+      'month $month/2026: $expectedDays days',
+      days.length == expectedDays,
+      '${days.length} days',
+    );
+
+    var ordered = true;
+    var dated = true;
+    String detail = '';
+    for (var i = 0; i < days.length; i++) {
+      if (!_prayersOrdered(days[i])) {
+        ordered = false;
+        detail = 'day ${i + 1} unordered: ${_timesOf(days[i])}';
+        break;
+      }
+      // Fajr belongs to the day being generated.
+      final fajr = days[i][0].prayerTime;
+      if (fajr.day != i + 1 || fajr.month != month) {
+        dated = false;
+        detail = 'day ${i + 1} starts on $fajr';
+        break;
+      }
+    }
+    check('month $month/2026: every day ordered', ordered, detail);
+    check('month $month/2026: every day on its own date', dated, detail);
+  }
+
+  // Hijri month across the autumn change, with a hijri offset applied.
+  final hijriLength = Utils.getHijriMonthLength(1447, 9);
+  final hijriCalc = TimetableCalc(
+    date: tz.TZDateTime(tz.getLocation(timezoneI), 2026, 10, 1, 3),
+    timezone: timezoneI,
+    lat: latI,
+    lng: lngI,
+    precision: true,
+    fajrAngle: angleI,
+    highLatitudeRule: adhan.HighLatitudeRule.twilightAngle.name,
+  );
+  for (final offset in [0, 1]) {
+    final days = PrayerTimetable.monthHijriTable(
+      1447,
+      9,
+      calc: hijriCalc,
+      timezone: timezoneI,
+      hijriOffset: offset,
+    );
+    check(
+      'hijri Ramadan 1447 (offset $offset): $hijriLength days',
+      days.length == hijriLength,
+      '${days.length} days',
+    );
+    var ok = true;
+    var detail = '';
+    for (var i = 0; i < days.length; i++) {
+      if (!_prayersOrdered(days[i])) {
+        ok = false;
+        detail = 'day ${i + 1} unordered: ${_timesOf(days[i])}';
+        break;
+      }
+      // Consecutive days: each must start on the calendar day after the last.
+      if (i > 0) {
+        final prev = days[i - 1][0].prayerTime;
+        final cur = days[i][0].prayerTime;
+        if (!cur.isAfter(prev)) {
+          ok = false;
+          detail = 'day ${i + 1} ($cur) is not after day $i ($prev)';
+          break;
+        }
+      }
+    }
+    check(
+      'hijri Ramadan 1447 (offset $offset): consecutive and ordered',
+      ok,
+      detail,
+    );
+  }
+
+  // hijriOffset on a single day across the autumn change must not step onto a
+  // 23:00 previous date.
+  for (final offset in [-1, 1]) {
+    final loc = calcAtZone(
+      timezoneI,
+      year: 2026,
+      month: 10,
+      day: 25,
+      hour: 0,
+      hijriOffset: offset,
+      lat: latI,
+      lng: lngI,
+    );
+    check(
+      'fall 00:00 hijriOffset $offset: ordered',
+      _prayersOrdered(loc.current),
+      _timesOf(loc.current),
+    );
+  }
+
+  // dayEnd must land on the end of its own date on a 25-hour day.
+  final end = dayEnd(dublin(2026, 10, 25));
+  check(
+    'dayEnd on the 25-hour day is 23:59:59.999999 on the 25th',
+    end.year == 2026 &&
+        end.month == 10 &&
+        end.day == 25 &&
+        end.hour == 23 &&
+        end.minute == 59,
+    '$end',
+  );
 }
 
 void main() {
@@ -342,6 +698,7 @@ void main() {
   runCalcEdgeCases();
   runMapEdgeCases();
   runListEdgeCases();
+  runDstCalendarEdgeCases();
 
   print('\n==================');
   print('Results: $_passed passed, $_failed failed');

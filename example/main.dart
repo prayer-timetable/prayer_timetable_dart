@@ -6,6 +6,7 @@
 /// - Prayer analysis and utilities
 /// - Qibla direction calculation
 /// - Hijri calendar integration
+library;
 
 import 'package:prayer_timetable/prayer_timetable.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -57,7 +58,8 @@ void basicExample() {
 
   for (int i = 0; i < 6; i++) {
     Prayer prayer = timetable.current[i];
-    String timeStr = '${prayer.prayerTime.hour.toString().padLeft(2, '0')}:'
+    String timeStr =
+        '${prayer.prayerTime.hour.toString().padLeft(2, '0')}:'
         '${prayer.prayerTime.minute.toString().padLeft(2, '0')}';
     print('  ${prayerNames[i].padRight(8)}: $timeStr');
   }
@@ -65,13 +67,17 @@ void basicExample() {
   // Show current prayer status
   print('\nPrayer Status:');
   print(
-      '  Current prayer ID: ${timetable.utils.currentId} (${prayerNames[timetable.utils.currentId]})');
+    '  Current prayer ID: ${timetable.utils.currentId} (${prayerNames[timetable.utils.currentId]})',
+  );
   print(
-      '  Next prayer ID: ${timetable.utils.nextId} (${prayerNames[timetable.utils.nextId]})');
+    '  Next prayer ID: ${timetable.utils.nextId} (${prayerNames[timetable.utils.nextId]})',
+  );
   print(
-      '  Time until next prayer: ${formatDuration(timetable.utils.countDown)}');
+    '  Time until next prayer: ${formatDuration(timetable.utils.countDown)}',
+  );
   print(
-      '  Prayer completion: ${timetable.utils.percentage.toStringAsFixed(1)}%');
+    '  Prayer completion: ${timetable.utils.percentage.toStringAsFixed(1)}%',
+  );
 }
 
 /// Advanced example with jamaah times and additional features
@@ -99,7 +105,7 @@ void advancedExample() {
       'afterthis',
       'afterthis',
       'afterthis',
-      'afterthis'
+      'afterthis',
     ],
     jamaahOffsets: [
       [0, 15], // Fajr jamaah 15 minutes after adhan
@@ -107,7 +113,7 @@ void advancedExample() {
       [0, 10], // Dhuhr jamaah 10 minutes after adhan
       [0, 10], // Asr jamaah 10 minutes after adhan
       [0, 5], // Maghrib jamaah 5 minutes after adhan
-      [0, 20] // Isha jamaah 20 minutes after adhan
+      [0, 20], // Isha jamaah 20 minutes after adhan
     ],
     jamaahPerPrayer: [true, false, true, true, true, true],
     timezone: 'Europe/London',
@@ -138,9 +144,11 @@ void advancedExample() {
   // Islamic information
   print('\nIslamic Information:');
   print(
-      '  Qibla direction: ${timetable.utils.qibla.toStringAsFixed(1)}° from North');
+    '  Qibla direction: ${timetable.utils.qibla.toStringAsFixed(1)}° from North',
+  );
   print(
-      '  Hijri date: ${timetable.utils.hijri[2]}/${timetable.utils.hijri[1]}/${timetable.utils.hijri[0]}');
+    '  Hijri date: ${timetable.utils.hijri[2]}/${timetable.utils.hijri[1]}/${timetable.utils.hijri[0]}',
+  );
   print('  Islamic midnight: ${formatTime(timetable.utils.midnight)}');
   print('  Last third of night: ${formatTime(timetable.utils.lastThird)}');
 }
@@ -168,7 +176,8 @@ void monthlyExample() {
   );
 
   print(
-      'Monthly Prayer Times for Dubai (${getMonthName(now.month)} ${now.year}):');
+    'Monthly Prayer Times for Dubai (${getMonthName(now.month)} ${now.year}):',
+  );
   print('Day  Fajr   Sunrise Dhuhr  Asr    Maghrib Isha');
   print('-' * 50);
 
@@ -222,7 +231,7 @@ String getMonthName(int month) {
     'September',
     'October',
     'November',
-    'December'
+    'December',
   ];
   return months[month - 1];
 }

@@ -7,10 +7,12 @@ library;
 import 'dart:core';
 
 import 'package:prayer_timetable/prayer_timetable.dart';
+import 'package:prayer_timetable/src/func/helpers.dart';
 import 'package:prayer_timetable/src/func/monthGen.dart';
 import 'package:prayer_timetable/src/func/monthHijriGen.dart';
 import 'package:prayer_timetable/src/func/prayers.dart';
 import 'package:prayer_timetable/src/func/tzTime.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 // typedef Future<List<T>> PrayerTimetableOnFind<T>(String text);
 // typedef String PrayerTimetableItemAsString<T>(T item);
@@ -40,7 +42,7 @@ const List<List<int>> defaultJamaahOffsets = [
   [0, 0], // Dhuhr: no offset
   [0, 0], // Asr: no offset
   [0, 0], // Maghrib: no offset
-  [0, 0] // Isha: no offset
+  [0, 0], // Isha: no offset
 ];
 
 /// Default jamaah calculation methods for each prayer.
@@ -52,7 +54,7 @@ const List<String> defaultJamaahMethods = [
   'afterthis', // Dhuhr
   'afterthis', // Asr
   'afterthis', // Maghrib
-  'afterthis' // Isha
+  'afterthis', // Isha
 ];
 
 /// Default setting to disable jamaah for all prayers
@@ -62,7 +64,7 @@ const List<bool> defaultJamaahPerPrayerOff = [
   false,
   false,
   false,
-  false
+  false,
 ];
 
 /// Default setting to enable jamaah for all prayers
@@ -72,7 +74,7 @@ const List<bool> defaultJamaahPerPrayerOn = [
   true,
   true,
   true,
-  true
+  true,
 ];
 
 /// Main class for Islamic prayer time management and calculations.
@@ -138,7 +140,7 @@ class PrayerTimetable<T> {
   /// Prayer times for the current hijri month
   // List<List<Prayer>>? monthHijriPrayerTimes;
 
-// PrayerTimetableMap map;
+  // PrayerTimetableMap map;
 
   /// ***************************************************
 
@@ -172,9 +174,9 @@ class PrayerTimetable<T> {
   double? lat;
   double? lng;
 
-/***************************************************** */
+  /***************************************************** */
 
-/***************************************************** */
+  /***************************************************** */
 
   /// ***************************************************
   // factory PrayerTimetable(String name) {
@@ -211,25 +213,31 @@ class PrayerTimetable<T> {
     this.second,
     this.lat,
     this.lng,
-  })  : assert((jamaahOn) && (jamaahMethods != null && jamaahOffsets != null) ||
-            (jamaahOn && jamaahPerPrayer != null) ||
-            jamaahOn == false),
-        assert(timetableCalc != null ||
-            (lat != null && lng != null) ||
-            timetableList != null ||
-            timetableMap != null), //  && jamaahPerPrayer != null
-        testing = false,
-        utils = defaultUtils {
+  }) : assert(
+         (jamaahOn) && (jamaahMethods != null && jamaahOffsets != null) ||
+             (jamaahOn && jamaahPerPrayer != null) ||
+             jamaahOn == false,
+       ),
+       assert(
+         timetableCalc != null ||
+             (lat != null && lng != null) ||
+             timetableList != null ||
+             timetableMap != null,
+       ), //  && jamaahPerPrayer != null
+       testing = false,
+       utils = defaultUtils {
     /// ********************************************
     /// Define time
     /// ********************************************
-    DateTime date = nowTZ(timezone,
-        year: year,
-        month: month,
-        day: day,
-        hour: hour,
-        minute: minute,
-        second: second);
+    DateTime date = nowTZ(
+      timezone,
+      year: year,
+      month: month,
+      day: day,
+      hour: hour,
+      minute: minute,
+      second: second,
+    );
 
     // print('${this.year}, ${this.month}, ${this.day}');
     // print(DateTime(this.year ?? date.year, this.month ?? date.month, (this.day ?? date.day) + 1,
@@ -242,15 +250,28 @@ class PrayerTimetable<T> {
     /// ********************************************
     /// Define prayer times
     /// ********************************************
+    // Step calendar days in the target time zone: a `DateTime(y, m, d + 1)`
+    // is built in the host's zone, which disagrees with `timezone` and breaks
+    // at midnight on a daylight-saving change.
+    final tz.Location location = tz.getLocation(timezone);
+    DateTime baseDate = tz.TZDateTime(
+      location,
+      year ?? date.year,
+      month ?? date.month,
+      day ?? date.day,
+      hour ?? 3,
+      minute ?? 0,
+      second ?? 0,
+    );
+    DateTime nextDate = dateByAddingDays(baseDate, 1);
+    DateTime previousDate = dateByAddingDays(baseDate, -1);
+
     current = prayersGen(
-      DateTime(year ?? date.year, month ?? date.month, day ?? date.day,
-          hour ?? 3, minute ?? 0, second ?? 0),
+      baseDate,
       timetableMap: timetableMap,
       timetableList: timetableList,
       differences: differences,
-      timetableCalc: timetableCalc?.copyWith(
-          date: DateTime(year ?? date.year, month ?? date.month,
-              (day ?? date.day), hour ?? 3, minute ?? 0, second ?? 0)),
+      timetableCalc: timetableCalc?.copyWith(date: baseDate),
       timezone: timezone,
       // useTz: useTz,
       hijriOffset: hijriOffset ?? 0,
@@ -264,14 +285,11 @@ class PrayerTimetable<T> {
     );
 
     next = prayersGen(
-      DateTime(year ?? date.year, month ?? date.month, (day ?? date.day) + 1,
-          hour ?? 3, minute ?? 0, second ?? 0),
+      nextDate,
       timetableMap: timetableMap,
       timetableList: timetableList,
       differences: differences,
-      timetableCalc: timetableCalc?.copyWith(
-          date: DateTime(year ?? date.year, month ?? date.month,
-              (day ?? date.day) + 1, hour ?? 3, minute ?? 0, second ?? 0)),
+      timetableCalc: timetableCalc?.copyWith(date: nextDate),
       timezone: timezone,
       // useTz: useTz,
       hijriOffset: hijriOffset ?? 0,
@@ -284,14 +302,11 @@ class PrayerTimetable<T> {
       prayerLength: prayerLength,
     );
     previous = prayersGen(
-      DateTime(year ?? date.year, month ?? date.month, (day ?? date.day) - 1,
-          hour ?? 3, minute ?? 0, second ?? 0),
+      previousDate,
       timetableMap: timetableMap,
       timetableList: timetableList,
       differences: differences,
-      timetableCalc: timetableCalc?.copyWith(
-          date: DateTime(year ?? date.year, month ?? date.month,
-              (day ?? date.day) - 1, hour ?? 3, minute ?? 0, second ?? 0)),
+      timetableCalc: timetableCalc?.copyWith(date: previousDate),
       timezone: timezone,
       // useTz: useTz,
       hijriOffset: hijriOffset ?? 0,
@@ -350,7 +365,7 @@ class PrayerTimetable<T> {
   }
 
   /// end PrayerTimetable base
-/***************************************************** */
+  /***************************************************** */
 
   // static monthTable({
   //   required String timezone,
@@ -470,26 +485,26 @@ class PrayerTimetable<T> {
     double? lat,
     double? lng,
   }) : this.base(
-          timetableMap: timetableMap,
-          year: year,
-          month: month,
-          day: day,
-          hijriOffset: hijriOffset,
-          jamaahOn: jamaahOn,
-          joinMaghrib: joinMaghrib,
-          joinDhuhr: joinDhuhr,
-          prayerLength: prayerLength,
-          timezone: timezone,
-          useTz: useTz,
-          jamaahPerPrayer: jamaahPerPrayer,
-          jamaahMethods: jamaahMethods,
-          jamaahOffsets: jamaahOffsets,
-          hour: hour,
-          minute: minute,
-          second: second,
-          lat: lat,
-          lng: lng,
-        );
+         timetableMap: timetableMap,
+         year: year,
+         month: month,
+         day: day,
+         hijriOffset: hijriOffset,
+         jamaahOn: jamaahOn,
+         joinMaghrib: joinMaghrib,
+         joinDhuhr: joinDhuhr,
+         prayerLength: prayerLength,
+         timezone: timezone,
+         useTz: useTz,
+         jamaahPerPrayer: jamaahPerPrayer,
+         jamaahMethods: jamaahMethods,
+         jamaahOffsets: jamaahOffsets,
+         hour: hour,
+         minute: minute,
+         second: second,
+         lat: lat,
+         lng: lng,
+       );
 
   /// end PrayerTimetable.map
 
@@ -507,7 +522,7 @@ class PrayerTimetable<T> {
       [0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0]
+      [0, 0, 0, 0, 0, 0],
     ],
     int? year,
     int? month,
@@ -532,27 +547,27 @@ class PrayerTimetable<T> {
     double? lat,
     double? lng,
   }) : this.base(
-          timetableList: timetableList,
-          differences: differences,
-          year: year,
-          month: month,
-          day: day,
-          hijriOffset: hijriOffset,
-          jamaahOn: jamaahOn,
-          joinMaghrib: joinMaghrib,
-          joinDhuhr: joinDhuhr,
-          prayerLength: prayerLength,
-          timezone: timezone,
-          useTz: useTz,
-          jamaahPerPrayer: jamaahPerPrayer,
-          jamaahMethods: jamaahMethods,
-          jamaahOffsets: jamaahOffsets,
-          hour: hour,
-          minute: minute,
-          second: second,
-          lat: lat,
-          lng: lng,
-        );
+         timetableList: timetableList,
+         differences: differences,
+         year: year,
+         month: month,
+         day: day,
+         hijriOffset: hijriOffset,
+         jamaahOn: jamaahOn,
+         joinMaghrib: joinMaghrib,
+         joinDhuhr: joinDhuhr,
+         prayerLength: prayerLength,
+         timezone: timezone,
+         useTz: useTz,
+         jamaahPerPrayer: jamaahPerPrayer,
+         jamaahMethods: jamaahMethods,
+         jamaahOffsets: jamaahOffsets,
+         hour: hour,
+         minute: minute,
+         second: second,
+         lat: lat,
+         lng: lng,
+       );
 
   /// end PrayerTimetable.list
 
@@ -580,24 +595,24 @@ class PrayerTimetable<T> {
     int? minute,
     int? second,
   }) : this.base(
-          timetableCalc: timetableCalc,
-          year: year,
-          month: month,
-          day: day,
-          hijriOffset: hijriOffset,
-          jamaahOn: jamaahOn,
-          joinMaghrib: joinMaghrib,
-          joinDhuhr: joinDhuhr,
-          prayerLength: prayerLength,
-          timezone: timezone,
-          useTz: useTz,
-          jamaahPerPrayer: jamaahPerPrayer,
-          jamaahMethods: jamaahMethods,
-          jamaahOffsets: jamaahOffsets,
-          hour: hour,
-          minute: minute,
-          second: second,
-        );
+         timetableCalc: timetableCalc,
+         year: year,
+         month: month,
+         day: day,
+         hijriOffset: hijriOffset,
+         jamaahOn: jamaahOn,
+         joinMaghrib: joinMaghrib,
+         joinDhuhr: joinDhuhr,
+         prayerLength: prayerLength,
+         timezone: timezone,
+         useTz: useTz,
+         jamaahPerPrayer: jamaahPerPrayer,
+         jamaahMethods: jamaahMethods,
+         jamaahOffsets: jamaahOffsets,
+         hour: hour,
+         minute: minute,
+         second: second,
+       );
 
   /// end PrayerTimetable.list
 }

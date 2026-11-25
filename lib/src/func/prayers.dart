@@ -7,6 +7,7 @@
 library;
 
 import 'package:prayer_timetable/prayer_timetable.dart';
+import 'package:prayer_timetable/src/func/helpers.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 /// Names of the six prayer/time periods in order
@@ -62,7 +63,7 @@ List<Prayer> prayersGen(
   tz.Location tzGet = tz.getLocation(timezone);
 
   // Adjust date by Hijri offset for calendar alignment
-  DateTime adjustedDate = date.add(Duration(days: hijriOffset));
+  DateTime adjustedDate = dateByAddingDays(date, hijriOffset);
   tz.TZDateTime timestamp = tz.TZDateTime(
     tzGet,
     adjustedDate.year,
@@ -79,13 +80,13 @@ List<Prayer> prayersGen(
     timestamp.year,
     timestamp.month,
     timestamp.day,
-  ).add(Duration(days: hijriOffset));
+  );
   DateTime dayEnd = tz.TZDateTime(
     tzGet,
     timestamp.year,
     timestamp.month,
     timestamp.day + 1,
-  ).add(Duration(days: hijriOffset));
+  );
 
   // DST adjustment: add 1 hour if daylight saving time is active
   int adjDst = timestamp.timeZone.isDst ? 1 : 0;

@@ -27,6 +27,53 @@ bool isDSTCalc(DateTime d) {
 /// Returns the value rounded to 2 decimal places as a double
 double round2Decimals(num value) => double.parse(value.toStringAsFixed(2));
 
+/// Adds [days] calendar days to [date], keeping its time zone.
+///
+/// A calendar day is not always 24 hours: it is 23 hours on a spring-forward
+/// date and 25 on an autumn fall-back one, so adding a fixed
+/// `Duration(days: days)` can land on the wrong calendar day. This steps to
+/// the wanted civil date instead, and keeps the wall-clock time and the kind
+/// of [date] (`tz.TZDateTime`, UTC, or local).
+///
+/// [date] - The starting date
+/// [days] - Calendar days to add (negative to go back)
+/// Returns the date [days] calendar days away in the same time zone
+DateTime dateByAddingDays(DateTime date, int days) {
+  final shifted = date.add(Duration(days: days));
+  final expected = DateTime.utc(
+    date.year,
+    date.month,
+    date.day + days,
+    date.hour,
+    date.minute,
+    date.second,
+    date.millisecond,
+    date.microsecond,
+  );
+  final actual = DateTime.utc(
+    shifted.year,
+    shifted.month,
+    shifted.day,
+    shifted.hour,
+    shifted.minute,
+    shifted.second,
+    shifted.millisecond,
+    shifted.microsecond,
+  );
+  final candidate = shifted.add(expected.difference(actual));
+
+  // Zones that move the clock forward at 00:00 (`Africa/Cairo`,
+  // `Asia/Beirut`, ...) have no midnight on the new day, so the correction
+  // above steps back onto the previous one. The shifted instant is already on
+  // the wanted calendar day then.
+  if (candidate.year == expected.year &&
+      candidate.month == expected.month &&
+      candidate.day == expected.day) {
+    return candidate;
+  }
+  return shifted;
+}
+
 /// Converts seconds since midnight to a DateTime object.
 ///
 /// This function is useful for converting prayer times stored as seconds
@@ -37,12 +84,13 @@ double round2Decimals(num value) => double.parse(value.toStringAsFixed(2));
 /// [offset] - Optional day offset to apply
 /// Returns a DateTime object representing the time
 DateTime secondsToDateTime(int seconds, DateTime date, {int offset = 0}) {
-  int dstAdjust = isDSTCalc(date) ? 1 : 0;
+  final target = dateByAddingDays(date, offset);
+  int dstAdjust = isDSTCalc(target) ? 1 : 0;
 
   return DateTime(
-    date.add(Duration(days: offset)).year,
-    date.add(Duration(days: offset)).month,
-    date.add(Duration(days: offset)).day,
+    target.year,
+    target.month,
+    target.day,
     0,
     0,
     0,
@@ -60,7 +108,11 @@ DateTime secondsToDateTime(int seconds, DateTime date, {int offset = 0}) {
 /// [showSeconds] - Whether to include seconds in the calculation
 /// Returns a DateTime object representing the time
 DateTime hourFractionToDateTime(
-    double hourFraction, DateTime date, bool summerTimeCalc, bool showSeconds) {
+  double hourFraction,
+  DateTime date,
+  bool summerTimeCalc,
+  bool showSeconds,
+) {
   // adjust times for dst
   int dstAdjust = summerTimeCalc && isDSTCalc(date) ? 1 : 0;
 
@@ -74,8 +126,14 @@ DateTime hourFractionToDateTime(
   if (second > 30 && !showSeconds) minute++;
   if (minute == 60) minute = 0;
 
-  return DateTime(date.year, date.month, date.day, hour, minute, second)
-      .add(Duration(hours: dstAdjust));
+  return DateTime(
+    date.year,
+    date.month,
+    date.day,
+    hour,
+    minute,
+    second,
+  ).add(Duration(hours: dstAdjust));
 }
 
 /// Adds a leading zero to single-digit numbers for formatting.
@@ -121,19 +179,29 @@ String twoDigits(int n) {
 /// Returns the start of the day (00:00:00) for a given DateTime.
 ///
 /// [time] - The DateTime to get the start of day for
-/// Returns a DateTime representing midnight of the same day
+/// Returns a DateTime representing midnight of the same day, in the same time
+/// zone (`tz.TZDateTime` and UTC are preserved)
 DateTime dayStart(DateTime time) {
+  if (time is tz.TZDateTime) {
+    return tz.TZDateTime(time.location, time.year, time.month, time.day);
+  }
+  if (time.isUtc) {
+    return DateTime.utc(time.year, time.month, time.day);
+  }
   return DateTime(time.year, time.month, time.day);
 }
 
 /// Returns the end of the day (23:59:59.999999) for a given DateTime.
 ///
 /// [time] - The DateTime to get the end of day for
-/// Returns a DateTime representing the last moment of the same day
+/// Returns a DateTime representing the last moment of the same day. The next
+/// day is stepped as a calendar day, so a 23- or 25-hour day still ends on its
+/// own date.
 DateTime dayEnd(DateTime time) {
-  return DateTime(time.year, time.month, time.day)
-      .add(const Duration(days: 1))
-      .subtract(const Duration(microseconds: 1));
+  return dateByAddingDays(
+    dayStart(time),
+    1,
+  ).subtract(const Duration(microseconds: 1));
 }
 
 /// Formats a Duration as a time string (HH:MM or HH:MM:SS).
@@ -143,10 +211,12 @@ DateTime dayEnd(DateTime time) {
 /// [round] - If true, excludes seconds from output
 /// Returns a formatted time string
 String printDuration(Duration duration, {int adjust = 0, bool round = false}) {
-  String twoDigitMinutes =
-      twoDigits((duration + Duration(seconds: adjust)).inMinutes.remainder(60));
-  String twoDigitSeconds =
-      twoDigits((duration + Duration(seconds: adjust)).inSeconds.remainder(60));
+  String twoDigitMinutes = twoDigits(
+    (duration + Duration(seconds: adjust)).inMinutes.remainder(60),
+  );
+  String twoDigitSeconds = twoDigits(
+    (duration + Duration(seconds: adjust)).inSeconds.remainder(60),
+  );
 
   if (round)
     return '${twoDigits(duration.inHours)}:$twoDigitMinutes';
@@ -160,13 +230,18 @@ String printDuration(Duration duration, {int adjust = 0, bool round = false}) {
 /// [adjust] - Optional seconds to add/subtract
 /// [round] - If true, excludes seconds from output
 /// Returns a formatted duration string with units
-String printDurationAlt(Duration duration,
-    {int adjust = 0, bool round = false}) {
+String printDurationAlt(
+  Duration duration, {
+  int adjust = 0,
+  bool round = false,
+}) {
   String hrs = '${((duration + Duration(seconds: adjust)).inHours)}';
-  String mins = ((duration + Duration(seconds: adjust)).inMinutes.remainder(60))
-      .toString();
-  String secs = ((duration + Duration(seconds: adjust)).inSeconds.remainder(60))
-      .toString();
+  String mins = ((duration + Duration(seconds: adjust)).inMinutes.remainder(
+    60,
+  )).toString();
+  String secs = ((duration + Duration(seconds: adjust)).inSeconds.remainder(
+    60,
+  )).toString();
   if (hrs == '0')
     hrs = '0h';
   else

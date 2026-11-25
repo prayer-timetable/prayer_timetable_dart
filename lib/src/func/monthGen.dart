@@ -5,6 +5,7 @@
 library;
 
 import 'package:prayer_timetable/prayer_timetable.dart';
+import 'package:prayer_timetable/src/func/helpers.dart';
 import 'package:prayer_timetable/src/func/prayers.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -50,11 +51,18 @@ List<List<Prayer>> monthGen(
   int prayerLength = 10,
 }) {
   /// Date
-  DateTime date = tz.TZDateTime(tz.getLocation(timezone), year, month, 1, 3, 0,
-      0); // making sure it is after 1 am for time change
+  DateTime date = tz.TZDateTime(
+    tz.getLocation(timezone),
+    year,
+    month,
+    1,
+    3,
+    0,
+    0,
+  ); // making sure it is after 1 am for time change
 
   // int daysInYear = date.year % 4 == 0 ? 366 : 365;
-  int daysInMonth = DateTime(date.year, date.month + 1, 0).day;
+  int daysInMonth = DateTime.utc(date.year, date.month + 1, 0).day;
 
   // print(daysInYear);
   // print(daysInMonth);
@@ -65,12 +73,14 @@ List<List<Prayer>> monthGen(
   // print(days);
 
   List<List<Prayer>> prayerList = List.generate(daysInMonth, (index) {
+    // Step calendar days, so a 23- or 25-hour day keeps the month on track.
+    final dayDate = dateByAddingDays(date, index);
     return prayersGen(
-      date.add(Duration(days: index)),
+      dayDate,
       timetableMap: timetable,
       timetableList: list,
       differences: differences,
-      timetableCalc: calc?.copyWith(date: date.add(Duration(days: index))),
+      timetableCalc: calc?.copyWith(date: dayDate),
       timezone: timezone,
       hijriOffset: hijriOffset,
       jamaahOn: jamaahOn,
