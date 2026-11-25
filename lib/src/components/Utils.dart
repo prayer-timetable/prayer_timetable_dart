@@ -316,20 +316,32 @@ class Utils {
     DateTime sunsetToday = prayersCurrent[4].prayerTime;
     DateTime sunsetYesterday = prayersPrevious[4].prayerTime;
     midnight = time.isBefore(dawnToday)
-        ? sunsetYesterday.add(Duration(
-            minutes:
-                (dawnToday.difference(sunsetYesterday).inMinutes / 2).floor()))
-        : sunsetToday.add(Duration(
-            minutes:
-                (dawnTomorrow.difference(sunsetToday).inMinutes / 2).floor()));
+        ? sunsetYesterday.add(
+            Duration(
+              minutes: (dawnToday.difference(sunsetYesterday).inMinutes / 2)
+                  .floor(),
+            ),
+          )
+        : sunsetToday.add(
+            Duration(
+              minutes: (dawnTomorrow.difference(sunsetToday).inMinutes / 2)
+                  .floor(),
+            ),
+          );
 
     lastThird = time.isBefore(dawnToday)
-        ? sunsetYesterday.add(Duration(
-            minutes: (2 * dawnToday.difference(sunsetYesterday).inMinutes / 3)
-                .floor()))
-        : sunsetToday.add(Duration(
-            minutes: (2 * dawnTomorrow.difference(sunsetToday).inMinutes / 3)
-                .floor()));
+        ? sunsetYesterday.add(
+            Duration(
+              minutes: (2 * dawnToday.difference(sunsetYesterday).inMinutes / 3)
+                  .floor(),
+            ),
+          )
+        : sunsetToday.add(
+            Duration(
+              minutes: (2 * dawnTomorrow.difference(sunsetToday).inMinutes / 3)
+                  .floor(),
+            ),
+          );
 
     // components
     time = inputDate;
@@ -347,7 +359,8 @@ class Utils {
     countUp = inputDate.difference(tempCurrent);
 
     percentage = round2Decimals(
-        100 * (countUp.inSeconds / (countDown + countUp).inSeconds));
+      100 * (countUp.inSeconds / (countDown + countUp).inSeconds),
+    );
 
     percentage = percentage.isNaN ? 0 : percentage;
 
@@ -379,7 +392,10 @@ class Utils {
   /// // Returns: 2025-03-26
   /// ```
   static DateTime hijriToGregorian(
-      int hijriYear, int hijriMonth, int hijriDay) {
+    int hijriYear,
+    int hijriMonth,
+    int hijriDay,
+  ) {
     var hDate = HijriCalendar.now();
     return hDate.hijriToGregorian(hijriYear, hijriMonth, hijriDay);
   }
@@ -544,7 +560,7 @@ class Utils {
       'رمضان', // Ramadan
       'شوال', // Shawwal
       'ذو القعدة', // Dhu al-Qi'dah
-      'ذو الحجة' // Dhu al-Hijjah
+      'ذو الحجة', // Dhu al-Hijjah
     ];
 
     if (hijriMonth >= 1 && hijriMonth <= 12) {
@@ -578,7 +594,7 @@ class Utils {
       'Ramadan',
       'Shawwal',
       'Dhu al-Qi\'dah',
-      'Dhu al-Hijjah'
+      'Dhu al-Hijjah',
     ];
 
     if (hijriMonth >= 1 && hijriMonth <= 12) {

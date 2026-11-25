@@ -14,7 +14,15 @@ String timezone = timezoneS;
 
 DateTime now = tz.TZDateTime.now(tz.getLocation(timezone));
 // DateTime setTime = tz.TZDateTime.from(DateTime(2024, 3, 31, 14, 32, 45), tz.getLocation(timezone));
-DateTime setTime = tz.TZDateTime(tz.getLocation(timezone), 2025, 10, 26, 17, 59, 55);
+DateTime setTime = tz.TZDateTime(
+  tz.getLocation(timezone),
+  2025,
+  10,
+  26,
+  17,
+  59,
+  55,
+);
 DateTime testTime = setTime;
 
 // print(vaktija['vaktija']['months'][0]['days'][0]['vakat']);
@@ -37,30 +45,37 @@ List differences = vaktija['differences']
     .toList();
 
 PrayerTimetable list(DateTime testTime) => PrayerTimetable.list(
-      timetableList: timetableList,
-      differences: differences,
-      year: testTime.year,
-      month: testTime.month,
-      day: testTime.day,
-      hour: testTime.hour,
-      minute: testTime.minute,
-      second: testTime.second,
-      jamaahOn: true,
-      // jamaahMethods: ['fixed', '', 'afterthis', 'afterthis', 'afterthis', 'afterthis'],
-      jamaahMethods: ['afterthis', '', 'afterthis', 'afterthis', 'afterthis', 'afterthis'],
-      jamaahOffsets: [
-        // [6, 0],
-        [0, 15],
-        [0, 0],
-        [0, 15],
-        [0, 15],
-        [0, 15],
-        [0, 15]
-      ],
-      // jamaahPerPrayer: [false, false, true, true, false, false],
-      timezone: timezone,
-      // useTz: false,
-    );
+  timetableList: timetableList,
+  differences: differences,
+  year: testTime.year,
+  month: testTime.month,
+  day: testTime.day,
+  hour: testTime.hour,
+  minute: testTime.minute,
+  second: testTime.second,
+  jamaahOn: true,
+  // jamaahMethods: ['fixed', '', 'afterthis', 'afterthis', 'afterthis', 'afterthis'],
+  jamaahMethods: [
+    'afterthis',
+    '',
+    'afterthis',
+    'afterthis',
+    'afterthis',
+    'afterthis',
+  ],
+  jamaahOffsets: [
+    // [6, 0],
+    [0, 15],
+    [0, 0],
+    [0, 15],
+    [0, 15],
+    [0, 15],
+    [0, 15],
+  ],
+  // jamaahPerPrayer: [false, false, true, true, false, false],
+  timezone: timezone,
+  // useTz: false,
+);
 
 PrayerTimetable location = list(testTime);
 
@@ -77,8 +92,14 @@ void main() {
   // print(differences);
 
   if (!live) {
-    jamaahTest(location,
-        utils: false, jamaah: false, prayer: true, tomorrow: true, yesterday: true);
+    jamaahTest(
+      location,
+      utils: false,
+      jamaah: false,
+      prayer: true,
+      tomorrow: true,
+      yesterday: true,
+    );
   } else {
     liveTest(location);
   }

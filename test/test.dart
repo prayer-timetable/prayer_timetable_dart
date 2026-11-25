@@ -35,9 +35,9 @@ void infoTest(dynamic time) {
   print('offset (ms):\t${time.timeZone.offset}');
   print('isDSTCalc:\t${isDSTCalc(time)}');
 
-// timeZone: ${lastMidnight.timeZone} or lastMidnight.location.name
-// time: ${lastMidnight.toIso8601String()}
-// lastMidnight.timeZone.offset in miliseconds
+  // timeZone: ${lastMidnight.timeZone} or lastMidnight.location.name
+  // time: ${lastMidnight.toIso8601String()}
+  // lastMidnight.timeZone.offset in miliseconds
 }
 
 void timetableTest(PrayerTimetable location) {
@@ -171,8 +171,12 @@ void jamaahTest(
   }
 }
 
-void liveTest(PrayerTimetable location,
-    {bool show = true, bool info = false, bool realtime = false}) {
+void liveTest(
+  PrayerTimetable location, {
+  bool show = true,
+  bool info = false,
+  bool realtime = false,
+}) {
   DateTime time = location.utils.time;
   PrayerTimetable loc = location;
 
@@ -208,28 +212,29 @@ void liveTest(PrayerTimetable location,
       if (info) infoTest(time);
 
       print('date:\t\t${formatDate(time, [yyyy, '-', mm, '-', dd])}');
-      print('hijri:\t\t${loc.utils.hijri[0]}-${loc.utils.hijri[1]}-${loc.utils.hijri[2]}');
+      print(
+        'hijri:\t\t${loc.utils.hijri[0]}-${loc.utils.hijri[1]}-${loc.utils.hijri[2]}',
+      );
       print('time:\t\t${formatDate(time, [HH, ':', nn, ':', ss])}');
 
       print('$gray----------------------------------------$noColor');
-      print('Prayers for:\t${formatDate(prayers.first.prayerTime, [yyyy, '-', mm, '-', dd])}');
+      print(
+        'Prayers for:\t${formatDate(prayers.first.prayerTime, [yyyy, '-', mm, '-', dd])}',
+      );
       print('$gray----------------------------------------$noColor');
 
       for (var i = 0; i <= 5; i++) {
         print(
-            '${prayers[i].isNext ? green : ''}${('${prayerNames[i]}:').padRight(8)}\t${formatDate(prayers[i].prayerTime, [
-              HH,
-              ':',
-              nn,
-              ':',
-              ss
-            ])}\t${formatDate(prayers[i].jamaahTime, [HH, ':', nn, ':', ss])}$noColor');
+          '${prayers[i].isNext ? green : ''}${('${prayerNames[i]}:').padRight(8)}\t${formatDate(prayers[i].prayerTime, [HH, ':', nn, ':', ss])}\t${formatDate(prayers[i].jamaahTime, [HH, ':', nn, ':', ss])}$noColor',
+        );
       }
 
       print('$gray----------------------------------------$noColor');
       print('$green${'-' * (loc.utils.percentage / 100 * 40).round()}$noColor');
       print('$gray----------------------------------------$noColor');
-      print('${yellow}countDown:\t${printDuration(loc.utils.countDown)}$noColor');
+      print(
+        '${yellow}countDown:\t${printDuration(loc.utils.countDown)}$noColor',
+      );
       print('${yellow}countUp:\t${printDuration(loc.utils.countUp)}$noColor');
       print('${yellow}percentage:\t${loc.utils.percentage}$noColor');
       // print('${yellow}currentId:\t${loc.utils.currentId}${noColor}');
@@ -279,7 +284,6 @@ void liveTest(PrayerTimetable location,
   else
     runable();
 }
-
 
 // exports.colors = {
 //   pass: 90,

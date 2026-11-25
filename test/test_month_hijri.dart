@@ -32,7 +32,8 @@ TimetableCalc calc = TimetableCalc(
 
 // Generate Hijri month table for Jumada al-awwal 1447
 List<List<Prayer>> list = PrayerTimetable.monthHijriTable(
-  1447, 5, // Jumada al-awwal 1447
+  1447,
+  5, // Jumada al-awwal 1447
   timetable: testTime.year % 4 == 0 ? dublinLeap : dublin,
   hijriOffset: 0,
   timezone: timezone,
@@ -44,9 +45,15 @@ void main() {
   print('Testing PrayerTimetable.monthHijriTable() for Jumada al-awwal 1447');
   print('Using Dublin timetable with timezone: $timezone');
   print('');
-  print('--------------------------------------------------------------------------------------');
-  print('Hijri Date  Fajr      Sunrise   Dhuhr     Asr       Maghrib   Isha      Gregorian');
-  print('--------------------------------------------------------------------------------------');
+  print(
+    '--------------------------------------------------------------------------------------',
+  );
+  print(
+    'Hijri Date  Fajr      Sunrise   Dhuhr     Asr       Maghrib   Isha      Gregorian',
+  );
+  print(
+    '--------------------------------------------------------------------------------------',
+  );
 
   for (int dayIndex = 0; dayIndex < list.length; dayIndex++) {
     List<Prayer> item = list[dayIndex];
@@ -57,43 +64,10 @@ void main() {
     String hijriDateStr = Utils.formatHijriDate(1447, 5, hijriDay);
 
     print(
-        '''${testTime.day == item[0].prayerTime.day ? green : noColor}$hijriDateStr  ${formatDate(item[0].prayerTime, [
-          HH,
-          ':',
-          nn,
-          ':',
-          ss
-        ])}  ${formatDate(item[1].prayerTime, [
-          HH,
-          ':',
-          nn,
-          ':',
-          ss
-        ])}  ${formatDate(item[2].prayerTime, [
-          HH,
-          ':',
-          nn,
-          ':',
-          ss
-        ])}  ${formatDate(item[3].prayerTime, [
-          HH,
-          ':',
-          nn,
-          ':',
-          ss
-        ])}  ${formatDate(item[4].prayerTime, [
-          HH,
-          ':',
-          nn,
-          ':',
-          ss
-        ])}  ${formatDate(item[5].prayerTime, [
-          HH,
-          ':',
-          nn,
-          ':',
-          ss
-        ])}  ${gregorianDate.year}-${gregorianDate.month.toString().padLeft(2, '0')}-${gregorianDate.day.toString().padLeft(2, '0')}$noColor''');
+      '''${testTime.day == item[0].prayerTime.day ? green : noColor}$hijriDateStr  ${formatDate(item[0].prayerTime, [HH, ':', nn, ':', ss])}  ${formatDate(item[1].prayerTime, [HH, ':', nn, ':', ss])}  ${formatDate(item[2].prayerTime, [HH, ':', nn, ':', ss])}  ${formatDate(item[3].prayerTime, [HH, ':', nn, ':', ss])}  ${formatDate(item[4].prayerTime, [HH, ':', nn, ':', ss])}  ${formatDate(item[5].prayerTime, [HH, ':', nn, ':', ss])}  ${gregorianDate.year}-${gregorianDate.month.toString().padLeft(2, '0')}-${gregorianDate.day.toString().padLeft(2, '0')}$noColor''',
+    );
   }
-  print('----------------------------------------------------------------------');
+  print(
+    '----------------------------------------------------------------------',
+  );
 }

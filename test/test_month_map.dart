@@ -33,7 +33,8 @@ DateTime testTime = setTime;
 // );
 
 List<List<Prayer>> list = PrayerTimetable.monthTable(
-  testTime.year, testTime.month,
+  testTime.year,
+  testTime.month,
   // calc: calc,
   // list: timetableList,
   timetable: dublin,
@@ -57,50 +58,21 @@ List<List<Prayer>> list = PrayerTimetable.monthTable(
 void main() {
   tz.initializeTimeZones();
 
-  print('----------------------------------------------------------------------');
+  print(
+    '----------------------------------------------------------------------',
+  );
   print('Date        Fajr      Sunrise   Dhuhr     Asr       Maghrib   Isha');
-  print('----------------------------------------------------------------------');
+  print(
+    '----------------------------------------------------------------------',
+  );
 
   for (List<Prayer> item in list) {
     print(
-        '''${testTime.day == item[0].prayerTime.day ? green : noColor}${formatDate(item[0].prayerTime, [
-          yyyy,
-          '-',
-          mm,
-          '-',
-          dd,
-          '  ',
-          HH,
-          ':',
-          nn,
-          ':',
-          ss
-        ])}  ${formatDate(item[1].prayerTime, [
-          HH,
-          ':',
-          nn,
-          ':',
-          ss
-        ])}  ${formatDate(item[2].prayerTime, [
-          HH,
-          ':',
-          nn,
-          ':',
-          ss
-        ])}  ${formatDate(item[3].prayerTime, [
-          HH,
-          ':',
-          nn,
-          ':',
-          ss
-        ])}  ${formatDate(item[4].prayerTime, [
-          HH,
-          ':',
-          nn,
-          ':',
-          ss
-        ])}  ${formatDate(item[5].prayerTime, [HH, ':', nn, ':', ss])}''');
+      '''${testTime.day == item[0].prayerTime.day ? green : noColor}${formatDate(item[0].prayerTime, [yyyy, '-', mm, '-', dd, '  ', HH, ':', nn, ':', ss])}  ${formatDate(item[1].prayerTime, [HH, ':', nn, ':', ss])}  ${formatDate(item[2].prayerTime, [HH, ':', nn, ':', ss])}  ${formatDate(item[3].prayerTime, [HH, ':', nn, ':', ss])}  ${formatDate(item[4].prayerTime, [HH, ':', nn, ':', ss])}  ${formatDate(item[5].prayerTime, [HH, ':', nn, ':', ss])}''',
+    );
   }
-  print('----------------------------------------------------------------------');
+  print(
+    '----------------------------------------------------------------------',
+  );
   print(noColor);
 }

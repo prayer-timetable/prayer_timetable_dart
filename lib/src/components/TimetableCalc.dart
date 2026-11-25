@@ -53,36 +53,39 @@ class TimetableCalc {
     this.adjustments,
     this.methodAdjustments,
   }) : prayerTimes = adhan.PrayerTimes(
-          coordinates: adhan.Coordinates(lat, lng),
-          date: date,
-          calculationParameters: adhan.CalculationParameters(
-            method: adhan.CalculationMethod.muslimWorldLeague,
-            fajrAngle: fajrAngle,
-            ishaAngle: ishaAngle ?? fajrAngle,
-            highLatitudeRule: _parseHighLatitudeRule(highLatitudeRule) ??
-                adhan.HighLatitudeRule.twilightAngle,
-            madhab: _parseMadhab(madhab) ?? adhan.Madhab.shafi,
-            adjustments: _parseAdjustments(adjustments) ??
-                {
-                  adhan.Prayer.fajr: 0,
-                  adhan.Prayer.sunrise: 0,
-                  adhan.Prayer.dhuhr: 0,
-                  adhan.Prayer.asr: 0,
-                  adhan.Prayer.maghrib: 0,
-                  adhan.Prayer.isha: 0,
-                },
-            methodAdjustments: _parseAdjustments(methodAdjustments) ??
-                {
-                  adhan.Prayer.fajr: 0,
-                  adhan.Prayer.sunrise: 0,
-                  adhan.Prayer.dhuhr: 0,
-                  adhan.Prayer.asr: 0,
-                  adhan.Prayer.maghrib: 0,
-                  adhan.Prayer.isha: 0,
-                },
-          ),
-          precision: precision,
-        );
+         coordinates: adhan.Coordinates(lat, lng),
+         date: date,
+         calculationParameters: adhan.CalculationParameters(
+           method: adhan.CalculationMethod.muslimWorldLeague,
+           fajrAngle: fajrAngle,
+           ishaAngle: ishaAngle ?? fajrAngle,
+           highLatitudeRule:
+               _parseHighLatitudeRule(highLatitudeRule) ??
+               adhan.HighLatitudeRule.twilightAngle,
+           madhab: _parseMadhab(madhab) ?? adhan.Madhab.shafi,
+           adjustments:
+               _parseAdjustments(adjustments) ??
+               {
+                 adhan.Prayer.fajr: 0,
+                 adhan.Prayer.sunrise: 0,
+                 adhan.Prayer.dhuhr: 0,
+                 adhan.Prayer.asr: 0,
+                 adhan.Prayer.maghrib: 0,
+                 adhan.Prayer.isha: 0,
+               },
+           methodAdjustments:
+               _parseAdjustments(methodAdjustments) ??
+               {
+                 adhan.Prayer.fajr: 0,
+                 adhan.Prayer.sunrise: 0,
+                 adhan.Prayer.dhuhr: 0,
+                 adhan.Prayer.asr: 0,
+                 adhan.Prayer.maghrib: 0,
+                 adhan.Prayer.isha: 0,
+               },
+         ),
+         precision: precision,
+       );
 
   /// The date for which prayer times are calculated
   DateTime date;
@@ -138,20 +141,19 @@ class TimetableCalc {
     String? madhab,
     Map<dynamic, dynamic>? adjustments,
     Map<dynamic, dynamic>? methodAdjustments,
-  }) =>
-      TimetableCalc(
-        date: date ?? this.date,
-        timezone: timezone ?? this.timezone,
-        lat: lat ?? this.lat,
-        lng: lng ?? this.lng,
-        precision: precision ?? this.precision,
-        fajrAngle: fajrAngle ?? this.fajrAngle,
-        ishaAngle: ishaAngle ?? this.ishaAngle ?? this.fajrAngle,
-        highLatitudeRule: highLatitudeRule ?? this.highLatitudeRule,
-        madhab: madhab ?? this.madhab,
-        adjustments: adjustments ?? this.adjustments,
-        methodAdjustments: methodAdjustments ?? this.methodAdjustments,
-      );
+  }) => TimetableCalc(
+    date: date ?? this.date,
+    timezone: timezone ?? this.timezone,
+    lat: lat ?? this.lat,
+    lng: lng ?? this.lng,
+    precision: precision ?? this.precision,
+    fajrAngle: fajrAngle ?? this.fajrAngle,
+    ishaAngle: ishaAngle ?? this.ishaAngle ?? this.fajrAngle,
+    highLatitudeRule: highLatitudeRule ?? this.highLatitudeRule,
+    madhab: madhab ?? this.madhab,
+    adjustments: adjustments ?? this.adjustments,
+    methodAdjustments: methodAdjustments ?? this.methodAdjustments,
+  );
 
   /// Converts a string representation of high latitude rule to the corresponding enum.
   ///
@@ -203,7 +205,8 @@ class TimetableCalc {
   ///
   /// Returns null if the input is null or results in an empty map.
   static Map<adhan.Prayer, int>? _parseAdjustments(
-      Map<dynamic, dynamic>? adjustments) {
+    Map<dynamic, dynamic>? adjustments,
+  ) {
     if (adjustments == null) return null;
     Map<adhan.Prayer, int> result = {};
 

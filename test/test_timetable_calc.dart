@@ -10,7 +10,15 @@ import 'test.dart';
 String timezone = timezoneI;
 
 DateTime now = tz.TZDateTime.now(tz.getLocation(timezone));
-DateTime setTime = tz.TZDateTime(tz.getLocation(timezone), 2024, 3, 31, 14, 32, 45);
+DateTime setTime = tz.TZDateTime(
+  tz.getLocation(timezone),
+  2024,
+  3,
+  31,
+  14,
+  32,
+  45,
+);
 DateTime testTime = now;
 
 TimetableCalc timetableCalc = TimetableCalc(
@@ -27,23 +35,30 @@ TimetableCalc timetableCalc = TimetableCalc(
 );
 
 PrayerTimetable calc(DateTime testTime) => PrayerTimetable.calc(
-      timetableCalc: timetableCalc,
-      year: testTime.year,
-      month: testTime.month,
-      day: testTime.day,
-      jamaahOn: true,
-      jamaahMethods: ['fixed', '', 'afterthis', 'afterthis', 'afterthis', 'afterthis'],
-      jamaahOffsets: [
-        [6, 0],
-        [0, 0],
-        [0, 15],
-        [0, 15],
-        [0, 15],
-        [0, 15]
-      ],
-      jamaahPerPrayer: [false, false, true, true, false, false],
-      timezone: timezone,
-    );
+  timetableCalc: timetableCalc,
+  year: testTime.year,
+  month: testTime.month,
+  day: testTime.day,
+  jamaahOn: true,
+  jamaahMethods: [
+    'fixed',
+    '',
+    'afterthis',
+    'afterthis',
+    'afterthis',
+    'afterthis',
+  ],
+  jamaahOffsets: [
+    [6, 0],
+    [0, 0],
+    [0, 15],
+    [0, 15],
+    [0, 15],
+    [0, 15],
+  ],
+  jamaahPerPrayer: [false, false, true, true, false, false],
+  timezone: timezone,
+);
 
 PrayerTimetable location = calc(testTime);
 
@@ -81,13 +96,15 @@ void main() {
   timetableCalc.highLatitudeRule = adhan.HighLatitudeRule.middleOfTheNight.name;
   print(timetableCalc.prayerTimes.fajr);
 
-  timetableCalc.highLatitudeRule = adhan.HighLatitudeRule.seventhOfTheNight.name;
+  timetableCalc.highLatitudeRule =
+      adhan.HighLatitudeRule.seventhOfTheNight.name;
   print(timetableCalc.prayerTimes.fajr);
 
   timetableCalc.highLatitudeRule = adhan.HighLatitudeRule.twilightAngle.name;
   print(timetableCalc.prayerTimes.fajr);
 
-  prayerTimes.calculationParameters.highLatitudeRule = adhan.HighLatitudeRule.twilightAngle;
+  prayerTimes.calculationParameters.highLatitudeRule =
+      adhan.HighLatitudeRule.twilightAngle;
   print(prayerTimes.fajr);
 
   if (!live) {
