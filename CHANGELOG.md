@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.3] - 2026-11-25
+
+### Fixed
+
+- **`adhan_dart` upgraded from `^2.0.1` to `^2.0.2`.** Brings the high-latitude and daylight-saving corrections: request a day at local midnight on a 23- or 25-hour DST date and the times came out unordered (Dublin, 25 October: `fajr` 09:39 and `isha` 14:37, ahead of `maghrib`); polar-circle and `ishaBefore`/`fajrAfter` bounds are fixed too.
+- **Calendar days are stepped, not 24-hour blocks.** New `dateByAddingDays` helper in `lib/src/func/helpers.dart` steps to the wanted civil date in the target time zone, so a 23- or 25-hour day can no longer land on the wrong date. Used by day and month generation, `hijriOffset`, and `dayStart`/`dayEnd`.
+
+### Changed
+
+- **Daily and monthly generation run in the target time zone.** `PrayerTimetable`, `monthGen` and `monthHijriGen` build their base date as a `tz.TZDateTime` in the requested `timezone` instead of a host-local `DateTime`, so a server in a different zone than the timetable cannot shift the day.
+- **`dayStart`/`dayEnd` keep the time zone.** They return `tz.TZDateTime` (or UTC) when given one, and `dayEnd` ends on its own calendar date on a 25-hour day.
+- **Dart formatting.** Source and tests are formatted with the current stable formatter, so `dart format` and the pub.dev analysis stay clean.
+
+### Added
+
+- **DST calendar regression checks.** `test/edge_cases.dart` now covers local-midnight requests on the autumn 25-hour day, midnight spring-forward zones (`Africa/Cairo`, `Asia/Beirut`), whole months across both transitions, Hijri months with `hijriOffset`, and `dayEnd` on a 25-hour day.
+
 ## [2.3.2] - 2026-06-22
 
 ### Fixed

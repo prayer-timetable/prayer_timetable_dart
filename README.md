@@ -26,7 +26,7 @@ Add this package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-    prayer_timetable: ^2.3.2
+    prayer_timetable: ^2.3.3
 ```
 
 Or install it from the command line:
